@@ -4,6 +4,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
 import SignupPage from './components/SignupPage';
 import LocationPage from './components/LocationPage';
+import TestAPI from './components/TestApi';
+import ThankYouPage from './components/ThankYou';
+import AddPetInfo from './components/AddPet';
+import BookingList from './components/BookingList';
+import AddBooking from './components/AddBooking';
 
 function App() {
     const [data, setData] = useState('');
@@ -29,6 +34,11 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/location" element={<LocationPage />} />
+                <Route path="/testapi" element={<TestAPI />} />
+                <Route path="/thankyou" element={<ThankYouPage />} />
+                <Route path="/addpet" element={<AddPetInfo />} />
+                <Route path="/bookings" element={<BookingList />} />
+                <Route path="/add_bookings" element={<AddBooking />} />
             </Routes>
         </BrowserRouter>
     );
