@@ -33,7 +33,10 @@ export default function Sidebar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
     const [username, setUsername] = useState(""); // State to store username
-
+    const[log,setlog] = useState("Login");
+    function handlelog(){
+        setlog("Login");
+    }
     useEffect(() => {
         const token = localStorage.getItem('token');
 
@@ -70,9 +73,19 @@ export default function Sidebar() {
     }, []);
 
     const handleLogout = () => {
+        // Clear the token from local storage
         localStorage.removeItem('token');
-        setUserInfo(null);
+        
+        // Reset the login state
+        setIsLoggedIn(false);
+        
+        // Reset the username
+        setUsername("");
+    
+        // Change the log state to "Login"
+        setlog("Login");
     };
+    
 
     return (
         <header className=" bg-transparent ">
@@ -154,14 +167,15 @@ export default function Sidebar() {
                     <a href="/home" className="text-sm font-semibold leading-6 text-white">
                         Company
                     </a>
+                    <a href="/profile" className="text-sm font-semibold leading-6 text-white">
+                                Profile
+                            </a>
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                     {isLoggedIn ? ( // If user is logged in, display profile link
                         <div>
-                            <a href="/profile" className="text-sm font-semibold leading-6 text-white">
-                                Profile
-                            </a>
-                            <button onClick={handleLogout} className="text-white">Logout</button>
+                            
+                            <button onClick={handleLogout} className="text-white ml-4 mr-4">Logout</button>
                         </div>
                     ) : ( // Otherwise, display login link
                         <a href="/centrallogin" className="text-sm font-semibold leading-6 text-white">
@@ -246,7 +260,7 @@ export default function Sidebar() {
                                     href="/profile"
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-50"
                                 >
-                                    Log in
+                                    {log}
                                 </a>
                             </div>
                         </div>

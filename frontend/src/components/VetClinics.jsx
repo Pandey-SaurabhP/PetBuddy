@@ -4,40 +4,41 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faArrowRight } from "@fortawesome/free-solid-svg-icons"; // Import the right arrow icon
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import PetImage from "../assets/pethouses.jpg"
+import Vet from "../assets/vet.jpg"
+// import VetClinicImage from "../assets/vetclinics.jpg";
 import CustomModal from "./CustomModal";
-
 
 import Sidebar2 from "./Sidebar2";
 import Footer from "./Footer";
-export default function PetHouses() {
+
+export default function VetClinics() {
     const [favorites, setFavorites] = useState([]);
     const [showBookingCard, setShowBookingCard] = useState(false);
-    const [selectedHotel, setSelectedHotel] = useState(null);
+    const [selectedClinic, setSelectedClinic] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
     const [filterItem, setFilterItem] = useState(null);
     const [sortedData, setSortedData] = useState(null); // State variable to hold sorted data
     const [data, setData] = useState([{
         id: 1,
-        title: "PetHouse A",
+        title: "Vet Clinic A",
         rating: 4,
         address: "123 Sector 18, Noida, U.P.",
-        additionalInfo: "Pet Grooming, Diet plans, Vet Available",
+        additionalInfo: "24/7 Emergency, Experienced Veterinarians, Pet Pharmacy",
         price: 100
     }]);
 
-    const [pethouse,setPethouse] = useState("");
+    const [clinic, setClinic] = useState("");
 
     useEffect(() => {
-        fetchPetHouses(); // Fetch data when component mounts
+        fetchVetClinics(); // Fetch data when component mounts
     }, []);
 
-    const fetchPetHouses = async () => {
+    const fetchVetClinics = async () => {
         try {
-            const response = await fetch("http://localhost:3001/api/centers"); // Adjust the endpoint according to your backend route
+            const response = await fetch("http://localhost:3001/api/clinics"); // Adjust the endpoint according to your backend route
             if (!response.ok) {
-                throw new Error("Failed to fetch pet houses");
+                throw new Error("Failed to fetch vet clinics");
             }
             const fetchedData = await response.json(); // Parse the JSON response
             console.log('Fetched Data : ', fetchedData);
@@ -54,7 +55,7 @@ export default function PetHouses() {
             setData(transformedData); // Set the transformed data into the state
             console.log('Data received from the backend:', transformedData);
         } catch (error) {
-            console.error("Error fetching pet houses:", error);
+            console.error("Error fetching vet clinics:", error);
         }
     };
 
@@ -66,14 +67,14 @@ export default function PetHouses() {
         }
     };
 
-    const handleBookNow = (hotel) => {
-        setPethouse(hotel);
+    const handleBookNow = (clinic) => {
+        setClinic(clinic);
         setShowBookingCard(true);
     };
-    function modalHandler() {
-        console.log("yes");
+
+    const modalHandler = () => {
         setShowBookingCard((prevOpn) => !prevOpn);
-    }
+    };
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -85,22 +86,18 @@ export default function PetHouses() {
 
     const handleFilterChange = (filter) => {
         setFilterItem(filter);
-        let sortedData = [];
         if (filter === "Rating") {
             // Sort data by rating
-            sortedData = [...data].sort((a, b) => b.rating - a.rating);
-        } else if (filter === "Cheapest") {
-            // Sort data by price
-            sortedData = [...data].sort((a, b) => a.price - b.price);
+            const sortedData = [...data].sort((a, b) => b.rating - a.rating);
+            setSortedData(sortedData);
         }
-        setSortedData(sortedData);
     };
 
     return (
         <div>
             <Sidebar2 />
             <h2 className="ml-20 mt-5 text-2xl font-semibold mb-4">
-                Showing Results for your search
+                Showing Results for Veterinary Clinics
             </h2>
             <div className="ml-20 flex flex-wrap items-center">
                 <button
@@ -110,37 +107,28 @@ export default function PetHouses() {
                 >
                     Rating
                 </button>
-                <button 
-                className=" text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-2 py-2 text-center me-2 mb-2"
-                onClick={() => handleFilterChange("Cheapest")}
-                >
-                    Cheapest
-                </button>
-                {/* <button className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-2 py-2 text-center me-2 mb-2">
-                    Customised Diets
+                <button className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-2 py-2 text-center me-2 mb-2">
+                    Nearest
                 </button>
                 <button className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-2 py-2 text-center me-2 mb-2">
-                    24/7
-                </button> */}
+                    24/7 Emergency
+                </button>
                 <button className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-2 py-2 text-center me-2 mb-2">
                     +Filters
                 </button>
             </div>
             <div className="flex ml-20 mt-10">
                 <div className="w-1/2">
-                    {(filterItem === "Rating"|| filterItem === "Cheapest" ? sortedData : data).map((item, index) => (
+                    {(filterItem === "Rating" ? sortedData : data).map((item, index) => (
                         <div
                             key={index}
                             className="relative rounded overflow-hidden shadow-lg mb-4"
                         >
                             <div className="px-6 py-4">
-                                <a href="/petHouseProfile">
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center m-3">
                                     <img
                                         className="h-64"
-                                        // pet[key].pet_image
-                                        src={PetImage}
-                                    // alt={pet[key].pet_name}
+                                        src={Vet}
                                     />
                                     <FontAwesomeIcon
                                         icon={faHeart}
@@ -165,7 +153,6 @@ export default function PetHouses() {
                                         <p className="text-gray-700 text-sm">{item.additionalInfo}</p>
                                     </div>
                                 </div>
-                                </a>
                             </div>
 
                             <div className="absolute bottom-0 right-0 mb-4 mr-4">
@@ -180,56 +167,14 @@ export default function PetHouses() {
                         </div>
                     ))}
                 </div>
-                {showBookingCard && <CustomModal modalOpen={showBookingCard} funcHandle={modalHandler} petHouse={pethouse} />}
-                {/* { { {showBookingCard && (
-          <div className="w-1/3 ml-8">
-            <div className="rounded overflow-hidden shadow-lg mb-4">
-              <div className="px-6 py-4">
-                <div className="font-bold text-xl">{selectedHotel.title}</div>
-                <div className="flex items-center mb-2">
-                  <span className="ml-2 bg-green-500 text-white px-2 py-1 rounded text-sm">
-                    {selectedHotel.rating}
-                  </span>
-                  {Array.from({ length: selectedHotel.rating }, (_, i) => (
-                    <i key={i} className="fas fa-star text-yellow-500"></i>
-                  ))}
-                </div>
-                <p className="text-gray-700 text-base">
-                  {selectedHotel.address}
-                </p>
-                <p className="text-gray-700 text-sm">
-                  {selectedHotel.additionalInfo}
-                </p>
-                <div className="mt-4">
-                  <p className="font-bold">Pick a Date:</p>
-                  <DatePicker
-                    selected={selectedDate}
-                    onChange={handleDateChange}
-                    className="border rounded p-2"
-                  />
-                </div>
-                <div className="mt-4">
-                  <p className="font-bold">Pick a Time:</p>
-                  <select
-                    className="border rounded p-2"
-                    onChange={(e) => handleTimeChange(e.target.value)}
-                  >
-                    <option value="9:00 AM">9:00 AM</option>
-                    <option value="10:00 AM">10:00 AM</option>
-                    <option value="11:00 AM">11:00 AM</option>
-                    {/* Add more options as needed */}
-                {/* </select>
-                </div>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded mt-4">
-                  <a href="/ty">Continue</a>
-                  <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
-                </button>
-              </div>
-            </div>
-          </div>
-        )} } } */}
+                {showBookingCard && <CustomModal modalOpen={showBookingCard} funcHandle={modalHandler} clinic={clinic} />}
             </div>
             <Footer />
         </div>
     );
 }
+
+
+
+
+

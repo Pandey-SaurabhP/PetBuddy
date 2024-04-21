@@ -14,7 +14,7 @@ export default function Features() {
             title: 'Vetenary Clinics',
             description: 'Offering convenient and effortless health checkups for your cherished pets, our services prioritize their well-being while minimizing any inconvenience or stress for both you and your furry companions.',
             imageUrl: 'src/assets/vet.jpg',
-            link: "/PetHouses",
+            link: "/vetClinics",
         },
         {
             id: 3,

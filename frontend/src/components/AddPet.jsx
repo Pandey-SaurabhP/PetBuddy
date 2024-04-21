@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Sidebar3 from "./Sidebar3";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -7,19 +7,65 @@ import axios from 'axios';
 export default function AddPet() {
 
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [username, setUsername] = useState(0);
+    const [isLoggedIn, setIsLoggedIn] = useState(0);
     // Define all your state variables and functions here...
+
+
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        const fetchUserDetails = async () => {
+            try {
+                const response = await axios.post(
+                    'http://localhost:3001/api/user',
+                    {},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                console.log('Received RRR : ', response.data.username);
+                setIsLoggedIn(1);
+                setUsername(response.data.username);
+
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching user details:', error.message);
+                return { username: null };
+            }
+        };
+
+        if (token) {
+
+            fetchUserDetails();
+            console.log('Hello!!!');
+        } else {
+            console.log('Token Not Set');
+        }
+    }, []);
 
     const handleNextClick = async () => {
         if (currentIndex === 4) {
             // If it's the last step, make the API call
             try {
-                const response = await axios.post('http://localhost:3001/api/pets/add', formData);
+                console.log('Called for backend');
+
+                // Add username to formData
+                const dataToSend = {
+                    ...formData,
+                    username: username // Assuming username is 's', replace it with the actual value
+                };
+
+                const response = await axios.post('http://localhost:3001/api/pets/add', dataToSend);
                 if (response.status === 200) {
                     console.log('Pet added successfully:', response.data);
                     window.location.href = '/profile';
                 } else {
                     console.error('Failed to add pet:', response.data);
-
                 }
             } catch (error) {
                 console.error('Error adding pet:', error);
@@ -420,7 +466,7 @@ export default function AddPet() {
                                     onChange={(e) => handleInputChange("willingnessToTravel", e.target.value)}
                                     type="text"
                                     className={`border-2 border-gray-400 rounded-lg px-8 py-2 w-50 h-10 mx-5 my-5`}
-                                    placeholder="Enter your pet's name"
+                                    placeholder="Are you willing to travel..."
                                 />
                             </div>
                         </div>

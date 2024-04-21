@@ -134,7 +134,7 @@ const Booking = mongoose.model('Booking', bookingSchema);
 
 app.post('/api/bookings', async (req, res) => {
     const { username } = req.body;
-    // console.log(req.body);
+    console.log('API/Booking Called : ', req.body);
 
     try {
         // Find all bookings associated with the provided username
@@ -153,7 +153,6 @@ app.post('/api/bookings', async (req, res) => {
 
 app.post('/api/bookings/add', async (req, res) => {
     const { username, pet_name, datetime_of_booking, type, time_slot, pethouse_id, start_time, end_time } = req.body; // Added pethouse_id
-    // console.log('Received request : ', req.body);
 
     try {
         // Generate payment ID (you can use any method to generate a unique ID)
@@ -196,6 +195,8 @@ const generatePaymentID = () => {
 app.post('/api/pets', async (req, res) => {
     const { user_name } = req.body;
 
+    console.log('API Pets called', user_name);
+
     try {
         // Find all pets associated with the provided user_name
         const pets = await Pet.find({ user_name });
@@ -203,6 +204,8 @@ app.post('/api/pets', async (req, res) => {
         if (!pets || pets.length === 0) {
             return res.status(404).json({ message: 'No pets found for the provided user_name' });
         }
+
+        console.log('dvahdavhasv : ', pets);
 
         res.json(pets);
     } catch (error) {
@@ -213,16 +216,25 @@ app.post('/api/pets', async (req, res) => {
 
 app.post('/api/pets/add', (req, res) => {
     // Destructure the request body to get the data for the new pet
-    const { name, ageYears, ageMonths, petWeight, willingnessToTravel, selected } = req.body;
+    const { name, ageYears, ageMonths, petWeight, willingnessToTravel, selected, username } = req.body;
+    console.log('Received request:', req.body);
+
+    // Generate a random pet ID
+    const pet_id = uuid.v4();
 
     // Create a new pet document based on the request body
     const newPet = new Pet({
+        pet_id, // Include the generated pet ID
         pet_name: name,
-        pet_type: (selected == 1? "Dog": (selected == 2? "Cat": (selected == 3? "Rabbit": "Rodent"))),
-        user_name: 's', // Assuming you have a way to identify the user
+        pet_age: `${ageYears} years ${ageMonths} months`,
+        pet_weight: petWeight,
+        pet_willingness: willingnessToTravel,
+        pet_type: (selected == 'option1' ? "Dog" : (selected == 'option2' ? "Cat" : (selected == 'option3' ? "Rabbit" : "Rodent"))),
+        user_name: username, // Assuming you have a way to identify the user
         pet_breed: 'Labrador', // Assuming you have a default breed or another way to get this data
-        // Assuming you have a way to handle the image data
-        pet_image: 'https://placekitten.com/200/300'
+        pet_image: 'https://placekitten.com/200/300', // Assuming you have a way to handle the image data
+        pet_size: 'Medium', // Assuming you have a default size or another way to get this data
+        pet_gender: 'male' // Assuming you have a default gender or another way to get this data
     });
 
     // Save the new pet document to the database
@@ -237,6 +249,7 @@ app.post('/api/pets/add', (req, res) => {
             res.status(500).json({ error: 'Failed to add pet' });
         });
 });
+
 
 
 

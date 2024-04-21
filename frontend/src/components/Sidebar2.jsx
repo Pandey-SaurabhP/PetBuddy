@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react';
 import logo from "../assets/logo.png";
+
 import axios from 'axios';
 
 import {
@@ -41,11 +42,27 @@ export default function Sidebar2() {
         setIsLoggedIn(true); // Set login status to true
         setUsername("xyz"); // Set username (replace "JohnDoe" with actual username)
     };
-
+    const[log,setlog] = useState("Login");
+    const seting= localStorage.getItem('token');
     // Function to handle user logout
+    function handlelog(){
+        if(log=="Login"){
+            setlog("Logout");
+        }
+        else setlog("Login");
+    }
     const handleLogout = () => {
+        // Clear the token from local storage
         localStorage.removeItem('token');
-        setUserInfo(null);
+        
+        // Reset the login state
+        setIsLoggedIn(false);
+        
+        // Reset the username
+        setUsername("");
+    
+        // Change the log state to "Login"
+        setlog("Login");
     };
 
     useEffect(() => {
@@ -168,15 +185,16 @@ export default function Sidebar2() {
                     <a href="/home" className="text-sm font-semibold leading-6 text-black">
                         Company
                     </a>
+                    <a href="/profile" className="text-sm font-semibold leading-6 text-black">
+                                    Profile
+                                </a>
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                     <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                         {isLoggedIn ? ( // If user is logged in, display profile link
-                            <div>
-                                <a href="/profile" className="text-sm font-semibold leading-6 text-white">
-                                    Profile
-                                </a>
-                                <button onClick={handleLogout} className="text-white">Logout</button>
+                            <div className=' ml-4 mr-4'>
+                                
+                                <button onClick={handleLogout} className="text-white ml-4 mr-4">Logout</button>
                             </div>
                         ) : ( // Otherwise, display login link
                             <a href="/centrallogin" className="text-sm font-semibold leading-6 text-white">
@@ -184,7 +202,7 @@ export default function Sidebar2() {
                             </a>
                         )}
                         {isLoggedIn && ( // If user is logged in, display username
-                            <span className="text-sm font-semibold leading-6 text-white ml-2">Welcome, {username}</span>
+                            <span className="text-sm font-semibold leading-6 text-white ml-4">Welcome, {username}</span>
                         )}
                     </div>
                 </div>
@@ -267,7 +285,7 @@ export default function Sidebar2() {
                                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-black hover:bg-gray-50"
                                         onClick={handleLogout}
                                     >
-                                        Log out
+                                        Logout
                                     </a>
                                 ) : ( // Otherwise, display login link
                                     <a
@@ -275,7 +293,7 @@ export default function Sidebar2() {
                                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-black hover:bg-gray-50"
                                         onClick={handleLogin}
                                     >
-                                        Log in
+                                        lOGIN
                                     </a>
                                 )}
                             </div>
