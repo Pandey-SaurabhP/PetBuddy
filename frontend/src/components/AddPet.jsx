@@ -40,6 +40,44 @@ export default function AddPet() {
             imgurl: 'src/assets/vetsvg.svg',
         },
     ];
+    const NameRef = useRef("");
+    const AgeRefYears = useRef("");
+    const AgeRefMonths = useRef("");
+    const PetWeightRef = useRef("");
+    const WillingRef = useRef("");
+    const SelectedRef = useRef("");
+    const [formData, setFormData] = useState({
+        name: useRef(""),
+        ageYears: useRef(""),
+        ageMonths: useRef(""),
+        petWeight: useRef(""),
+        willingnessToTravel: useRef(""),
+        selected: useRef("")
+    });
+
+    const handleInputChange = (fieldName, value) => {
+        setFormData({
+            ...formData,
+            [fieldName]: value
+        });
+    };
+
+
+    const [selectedSize, setSelectedSize] = useState("");
+
+    const handleSizeClick = (size) => {
+        setSelectedSize(size);
+    };
+    const [selectedBreed, setSelectedBreed] = useState("");
+
+    const handleBreedClick = (opt) => {
+        setSelectedBreed(opt);
+    };
+    const [selectedTypeBreed,setSelectedTypeBreed]=useState("");
+    const handleTypeBreedClick = (opt) => {
+        setSelectedTypeBreed(opt);
+    };
+    
     const Gender = [
         {
             id: 1,
@@ -78,7 +116,7 @@ export default function AddPet() {
             setCurrentIndex(currentIndex + 1);
         }
     };
-    
+
 
     return (
         <>
@@ -121,7 +159,7 @@ export default function AddPet() {
                                     {Purpose.map((aim) => (
                                         <div
                                             key={aim.id}
-                                            className={`flex flex-col items-center justify-center text-gray-700 bg-white shadow-md bg-clip-border rounded-lg w-32 h-32 m-5 p-5 cursor-pointer bg-${selectedPurpose === aim.id ? 'gray-500' : 'white'}`}
+                                            className={`flex flex-col items-center justify-center text-gray-700 shadow-md bg-clip-border rounded-lg w-32 h-32 m-5 p-5 cursor-pointer bg-${selectedPurpose === aim.id ? 'gray-500' : 'white'}`}
                                             onClick={() => handlePurposeClick(aim.id)}
                                         >
                                             <img src={aim.imgurl} alt={aim.title} className='w-20 h-20 mb-2' />
@@ -152,9 +190,11 @@ export default function AddPet() {
                                     What's your pet's name?
                                 </div>
                                 <input
+                                    ref={formData.name}
                                     type="text"
                                     className={`border-2 border-gray-400 rounded-lg px-8 py-2 w-50 h-10 mx-5 my-5`}
                                     placeholder="Enter your pet's name"
+                                    onChange={(e) => handleInputChange("name", e.target.value)}
                                 />
                             </div>
                             <div className='text-center text-2xl text-black font-bold mb-4'>
@@ -197,59 +237,54 @@ export default function AddPet() {
                             <div className='text-center text-2xl text-black font-bold mb-4'>
                                 What's your pet's breed?
                             </div>
-                            <div className="flex items-center mb-4">
-                                <input
-                                    id="default-checkbox"
-                                    type="checkbox"
-                                    value=""
-                                    className="form-radio h-6 w-6 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                />
-                                <label
-                                    htmlFor="default-checkbox"
-                                    className="ml-2 text-sm font-medium text-gray-900"
-                                >
-                                    Default checkbox
-                                </label>
-                            </div>
-                            <div className="flex items-center mb-4">
-                                <input
-                                    id="checked-checkbox"
-                                    type="checkbox"
-                                    value=""
-                                    className="form-radio h-6 w-6 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                />
-                                <label
-                                    htmlFor="checked-checkbox"
-                                    className="ml-2 text-sm font-medium text-gray-900"
-                                >
-                                    Checked state
-                                </label>
+                            <div className="flex items-center mt-4">
+                                    <button
+                                        className={`w-20 h-12  border border-gray-300 mx-2 ${selectedTypeBreed === "Purebred" ? 'bg-gray-500' : 'bg-white'}`}
+                                        onClick={() => handleTypeBreedClick("Purebred")}
+                                    >
+                                        Purebred
+                                    </button>
+                                    <button
+                                        className={`w-20 h-12 border border-gray-300 mx-2 ${selectedTypeBreed === "Crossbred" ? 'bg-gray-500' : 'bg-white'}`}
+                                        onClick={() => handleTypeBreedClick("Crossbred")}
+                                    >
+                                        Crossbred
+                                    </button>
                             </div>
                             <div className="flex flex-col ">
                                 <div className='text-center text-2xl text-black font-bold mb-4'>
                                     Select specific breed
                                 </div>
                                 <select
+                                    ref={formData.selected}
+                                    onChange={(e) => handleInputChange("selected", e.target.value)}
                                     placeholder="Enter your pet's breed"
                                     className="ml-2 border-2 border-gray-400 rounded-lg px-4 py-2"
                                 >
                                     <option value="">Select an option</option>
-                                    <option value="option1">Option 1</option>
-                                    <option value="option2">Option 2</option>
-                                    <option value="option3">Option 3</option>
+                                    <option value="option1">Labrador</option>
+                                    <option value="option2">German Shepherd</option>
+                                    <option value="option3">Golden Retriever</option>
                                 </select>
                             </div>
                             <div className='flex flex-row mt-4'>
                                 <div className='text-center text-2xl text-black font-bold'>
                                     Certified breed?
                                 </div>
-                                <div className="flex items-center ml-4">
-                                    <input id="default-radio-1" type="radio" value="" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                    <label htmlFor="default-radio-1" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yes</label>
-                                </div>
-                                <div className="flex items-center ml-4">
-                                    <input checked id="default-radio-2" type="radio" value="" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                    <label htmlFor="default-radio-2" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">No</label>
+                                <div className="flex items-center mt-4">
+                                    <button
+                                        className={`w-16 h-16 rounded-full border border-gray-300 mx-2 ${selectedBreed === "Yes" ? 'bg-gray-500' : 'bg-white'}`}
+                                        onClick={() => handleBreedClick("Yes")}
+                                    >
+                                        Yes
+                                    </button>
+                                    <button
+                                        className={`w-16 h-16 rounded-full border border-gray-300 mx-2 ${selectedBreed === "No" ? 'bg-gray-500' : 'bg-white'}`}
+                                        onClick={() => handleBreedClick("No")}
+                                    >
+                                        No
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
@@ -274,61 +309,86 @@ export default function AddPet() {
                             <div className='text-center text-2xl text-black font-bold'>
                                 How big is your pet?
                             </div>
-                            <div className='flex flex-row mt-4'>
+                            <div className="flex items-center mt-4">
+                                <button
+                                    className={`w-16 h-16 rounded-full border border-gray-300 mx-2 ${selectedSize === "Small" ? 'bg-gray-500' : 'bg-white'}`}
+                                    onClick={() => handleSizeClick("Small")}
+                                >
+                                    Small
+                                </button>
+                                <button
+                                    className={`w-16 h-16 rounded-full border border-gray-300 mx-2 ${selectedSize === "Medium" ? 'bg-gray-500' : 'bg-white'}`}
+                                    onClick={() => handleSizeClick("Medium")}
+                                >
+                                    Medium
+                                </button>
+                                <button
+                                    className={`w-16 h-16 rounded-full border border-gray-300 mx-2 ${selectedSize === "Large" ? 'bg-gray-500' : 'bg-white'}`}
+                                    onClick={() => handleSizeClick("Large")}
+                                >
+                                    Large
+                                </button>
+                                <button
+                                    className={`w-16 h-16 rounded-full border border-gray-300 mx-2 ${selectedSize === "Extra Large" ? 'bg-gray-500' : 'bg-white'}`}
+                                    onClick={() => handleSizeClick("Extra Large")}
+                                >
+                                    Extra Large
+                                </button>
+                            </div>
 
-                                <div className="flex items-center ml-4">
-                                    <input id="size-small" type="radio" value="Small" name="pet-size" className="w-7 h-7 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                    <label htmlFor="size-small" className="ml-2 text-md font-medium text-gray-900 dark:text-gray-300">Small</label>
-                                </div>
-                                {/* Add other size options similarly */}
+                        </div>
+                        <div className='text-center text-2xl text-black font-bold mt-6'>
+                            How old is your pet?
+                        </div>
+                        <div className="flex flex-row flex-wrap justify-center   mt-4">
+                            <div className="flex flex-col items-center">
+                                <label htmlFor="pet-age-years" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
+                                <input
+                                    ref={formData.ageYears}
+                                    onChange={(e) => handleInputChange("ageYears", e.target.value)}
+                                    id="pet-age-years"
+                                    type="number"
+                                    min="0"
+                                    className="border-2 border-gray-400 rounded-lg px-4 py-2 w-20 h-10 mx-1 my-2"
+                                    placeholder="Years"
+                                />
                             </div>
-                            <div className='text-center text-2xl text-black font-bold mt-6'>
-                                How old is your pet?
+                            <div className="flex flex-col items-center">
+                                <label htmlFor="pet-age-months" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
+                                <input
+                                    ref={formData.ageMonths}
+                                    onChange={(e) => handleInputChange("ageMonths", e.target.value)}
+                                    id="pet-age-months"
+                                    type="number"
+                                    min="0"
+                                    max="11"
+                                    className="border-2 border-gray-400 rounded-lg px-4 py-2 w-20 h-10 mx-1 my-2"
+                                    placeholder="Months"
+                                />
                             </div>
-                            <div className="flex flex-row flex-wrap justify-center   mt-4">
-                                <div className="flex flex-col items-center">
-                                    <label htmlFor="pet-age-years" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
-                                    <input
-                                        id="pet-age-years"
-                                        type="number"
-                                        min="0"
-                                        className="border-2 border-gray-400 rounded-lg px-4 py-2 w-20 h-10 mx-1 my-2"
-                                        placeholder="Years"
-                                    />
-                                </div>
-                                <div className="flex flex-col items-center">
-                                    <label htmlFor="pet-age-months" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
-                                    <input
-                                        id="pet-age-months"
-                                        type="number"
-                                        min="0"
-                                        max="11"
-                                        className="border-2 border-gray-400 rounded-lg px-4 py-2 w-20 h-10 mx-1 my-2"
-                                        placeholder="Months"
-                                    />
-                                </div>
+                        </div>
+                        <div className='text-center text-2xl text-black font-bold mt-6'>
+                            Your pet's weight
+                        </div>
+                        <div className="flex flex-row flex-wrap justify-center   mt-4">
+                            <div className="flex flex-col items-center">
+                                <label htmlFor="pet-age-years" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
+                                <input
+                                    ref={formData.petWeight}
+                                    onChange={(e) => handleInputChange("petWeight", e.target.value)}
+                                    id="pet-weight"
+                                    type="number"
+                                    min="0"
+                                    className="border-2 border-gray-400 rounded-lg px-4 py-2 w-20 h-10 mx-1 my-2"
+                                    placeholder="Kgs"
+                                />
                             </div>
-                            <div className='text-center text-2xl text-black font-bold mt-6'>
-                                Your pet's weight
-                            </div>
-                            <div className="flex flex-row flex-wrap justify-center   mt-4">
-                                <div className="flex flex-col items-center">
-                                    <label htmlFor="pet-age-years" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
-                                    <input
-                                        id="pet-weight"
-                                        type="number"
-                                        min="0"
-                                        className="border-2 border-gray-400 rounded-lg px-4 py-2 w-20 h-10 mx-1 my-2"
-                                        placeholder="Kgs"
-                                    />
-                                </div>
-                                </div>
                         </div>
                     </div>
                 </div>
             )}
 
-            
+
             {currentIndex === 4 && (
                 <div className="flex justify-center items-start pt-8">
                     <div className="w-full max-w-md">
@@ -347,6 +407,8 @@ export default function AddPet() {
                                     Willingness to travel?
                                 </div>
                                 <input
+                                    ref={formData.willingnessToTravel}
+                                    onChange={(e) => handleInputChange("willingnessToTravel", e.target.value)}
                                     type="text"
                                     className={`border-2 border-gray-400 rounded-lg px-8 py-2 w-50 h-10 mx-5 my-5`}
                                     placeholder="Enter your pet's name"
