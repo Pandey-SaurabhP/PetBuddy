@@ -27,6 +27,8 @@ export default function PetHouses() {
         price: 100
     }]);
 
+    const [pethouse,setPethouse] = useState("");
+
     useEffect(() => {
         fetchPetHouses(); // Fetch data when component mounts
     }, []);
@@ -65,7 +67,7 @@ export default function PetHouses() {
     };
 
     const handleBookNow = (hotel) => {
-        setSelectedHotel(hotel);
+        setPethouse(hotel);
         setShowBookingCard(true);
     };
     function modalHandler() {
@@ -169,7 +171,7 @@ export default function PetHouses() {
                         </div>
                     ))}
                 </div>
-                {showBookingCard && <CustomModal modalOpen={showBookingCard} funcHandle={modalHandler} />}
+                {showBookingCard && <CustomModal modalOpen={showBookingCard} funcHandle={modalHandler} petHouse={pethouse} />}
                 {/* { { {showBookingCard && (
           <div className="w-1/3 ml-8">
             <div className="rounded overflow-hidden shadow-lg mb-4">

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-export default function CustomModal({ modalOpen, funcHandle, booking, handleBooking, petHouse }) {
+export default function CustomModal({ modalOpen, funcHandle, booking, handleBooking }) {
     const [selectedPetId, setSelectedPetId] = useState(""); // Default selected pet ID
     const [startDate, setStartDate] = useState(""); // Default start date
     const [endDate, setEndDate] = useState(""); // Default end date
@@ -11,7 +11,7 @@ export default function CustomModal({ modalOpen, funcHandle, booking, handleBook
     const [userPets, setUserPets] = useState([]); // State to hold user's pets
     const [username, setUsername] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(0);
-    console.log(petHouse);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -62,8 +62,6 @@ export default function CustomModal({ modalOpen, funcHandle, booking, handleBook
         const selectedPet = userPets.find((pet) => pet.pet_id === selectedPetId);
 
         // Construct the new booking object
-        console.log(petHouse);
-
         const newBooking = {
             username: username, // Use the obtained username
             pet_name: selectedPet.pet_name, // Update key to match API endpoint
@@ -71,7 +69,6 @@ export default function CustomModal({ modalOpen, funcHandle, booking, handleBook
             type: "Pet House", // Replace with actual booking type if needed
             start_time: startDate, // Use selected start date
             end_time: endDate, // Use selected end date
-            pethouse_id: petHouse.id
         };
 
         // Send POST request to add new booking

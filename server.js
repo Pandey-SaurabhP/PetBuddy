@@ -18,11 +18,11 @@ const uri = 'mongodb+srv://pandeygrocks:Saurabh04@maindb.ijbfr2l.mongodb.net/pet
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(async () => {
-        
+
         console.log('Connected to MongoDB');
     })
     .catch((error) => {
-        
+
         console.error('Error connecting to MongoDB:', error);
     });
 
@@ -77,6 +77,9 @@ const petSchema = new mongoose.Schema({
     pet_type: {
         type: String
     },
+    user_name: {
+        type: String
+    },
     pet_breed: {
         type: String
     },
@@ -99,13 +102,16 @@ const bookingSchema = new mongoose.Schema({
     type: {
         type: String
     },
-    start_time: {
+    start_date: {
         type: Date
     },
-    end_time: {
+    end_date: {
         type: Date
     },
     payment_id: {
+        type: String
+    },
+    pethouse_id: {
         type: String
     }
 });
@@ -131,7 +137,8 @@ app.post('/api/bookings', async (req, res) => {
 });
 
 app.post('/api/bookings/add', async (req, res) => {
-    const { user_name, pet_name, datetime_of_booking, type, time_slot } = req.body;
+    const { username, pet_name, datetime_of_booking, type, time_slot, pethouse_id, start_time, end_time } = req.body; // Added pethouse_id
+    console.log('Received request : ', req.body);
 
     try {
         // Generate payment ID (you can use any method to generate a unique ID)
@@ -139,12 +146,15 @@ app.post('/api/bookings/add', async (req, res) => {
 
         // Create a new booking record
         const newBooking = new Booking({
-            user_name,
+            user_name: username,
             pet_name,
             datetime_of_booking,
             type,
             time_slot,
-            payment_id
+            payment_id,
+            pethouse_id,
+            start_date: start_time,
+            end_date: end_time
         });
 
         // Save the booking record to the database
@@ -157,6 +167,7 @@ app.post('/api/bookings/add', async (req, res) => {
     }
 });
 
+
 const generatePaymentID = () => {
     // Generate a random alphanumeric string (you can use any method to generate a unique ID)
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -167,25 +178,24 @@ const generatePaymentID = () => {
     return paymentID;
 };
 
-
 app.post('/api/pets', async (req, res) => {
-    const petName = req.body.pet_name;
-    console.log(petName);
+    const { user_name } = req.body;
 
     try {
-        // Find pet by pet_name
-        const pet = await Pet.findOne({ pet_name: petName });
+        // Find all pets associated with the provided user_name
+        const pets = await Pet.find({ user_name });
 
-        if (!pet) {
-            return res.status(404).json({ message: 'Pet not found' });
+        if (!pets || pets.length === 0) {
+            return res.status(404).json({ message: 'No pets found for the provided user_name' });
         }
 
-        res.json(pet);
+        res.json(pets);
     } catch (error) {
         console.error('Error retrieving pet information:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 
 app.get('/api/centers', async (req, res) => {
@@ -203,25 +213,41 @@ app.get('/api/centers', async (req, res) => {
     }
 });
 
+app.post('/api/userData', async (req, res) => {
+    const { user_name } = req.body;
+
+    try {
+        // Find the user by user_name in the Users collection
+        const userData = await Users.findOne({ user_name });
+
+        if (!userData) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log(userData);
+        res.json(userData); // Send the user data as response
+    } catch (error) {
+        console.error('Error retrieving user data:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
 
 app.post('/api/signup', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        // Check if username already exists
         const existingUser = await Users.findOne({ user_name: username });
         if (existingUser) {
             return res.status(400).json({ message: 'Username already exists' });
         }
 
-        // Generate a random user_id
         const user_id = uuid.v4();
 
-        // Hardcoded user_address and mobile_number
         const user_address = "123 Main Street, Cityville, USA";
         const mobile_number = "123-456-7890";
 
-        // Create new user
         const newUser = new Users({ user_id, user_name: username, password, user_address, mobile_number });
         await newUser.save();
 
@@ -236,18 +262,15 @@ app.post('/api/signup', async (req, res) => {
 // Login endpoint
 app.post('/api/login', async (req, res) => {
     const { user_name: username, password } = req.body;
-    console.log(req.body);
 
     try {
-        // Find user by username and password in MongoDB
         const user = await Users.findOne({ username, password });
         if (!user) {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
-        // Generate JWT token
-        const token = jwt.sign({ username: user.username }, secretKey, { expiresIn: '5m' });
-        console.log('Token : ', token);
+        const token = jwt.sign({ username: user.user_name }, secretKey, { expiresIn: '1h' });
+
         res.json({ token });
     } catch (error) {
         console.error('Login failed:', error);
@@ -255,22 +278,34 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+
 app.post('/api/user', (req, res) => {
-    const { token } = req.body;
+    const token = req.headers.authorization;
+
+    console.log('Received Token:', token);
 
     try {
-        // Verify and decode JWT token
-        const decoded = jwt.verify(token, secretKey);
+        if (!token || !token.startsWith('Bearer ')) {
+            throw new Error('Invalid token format');
+        }
+        const decodedToken = token.split(' ')[1];
+
+        console.log('Decoded Token:', decodedToken);
+
+        const decoded = jwt.verify(decodedToken, secretKey);
         if (Date.now() >= decoded.exp * 1000) {
             throw new Error('Token expired');
         }
-        // Send back user information (username in this case)
+
+        console.log('Decoded:', decoded);
         res.json({ username: decoded.username });
     } catch (error) {
-        // console.error('Error decoding token:', error);
-        res.json({ username: 'Expired' });
+        console.error('Error decoding token:', error);
+        res.status(401).json({ message: 'Unauthorized' });
     }
 });
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

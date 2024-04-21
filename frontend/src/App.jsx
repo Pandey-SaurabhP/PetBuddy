@@ -19,9 +19,9 @@ function App() {
         <Route path="/Pethouses" element={<PetHouses/>}/>
         <Route path="/Features" element={<Features/>}/>
         <Route path="/ty" element={<TY/>}/>
-        <Route path="/addpet" element={<AddPetInfo/>}/>
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/signup" element={<SignupForm/>}/>
+        <Route path="/addpet" element={<AddPetInfo/>}/>
 
       </Routes>
       </BrowserRouter>
