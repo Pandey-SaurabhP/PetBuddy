@@ -218,7 +218,7 @@ export default function PetHouses() {
               </div>
             </div>
           </div>
-        )} } } */} */
+        )} } } */}
             </div>
             <Footer />
         </div>

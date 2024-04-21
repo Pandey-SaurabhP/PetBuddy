@@ -44,14 +44,13 @@ export default function Sidebar2() {
 
     // Function to handle user logout
     const handleLogout = () => {
-        // Perform logout actions...
-        setIsLoggedIn(false); // Set login status to false
-        setUsername(""); // Clear username
+        localStorage.removeItem('token');
+        setUserInfo(null);
     };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-    
+
         const fetchUserDetails = async () => {
             try {
                 const response = await axios.post(
@@ -67,16 +66,16 @@ export default function Sidebar2() {
                 console.log('Received RRR : ', response.data.username);
                 setIsLoggedIn(1);
                 setUsername(response.data.username);
-                
+
                 return response.data;
             } catch (error) {
                 console.error('Error fetching user details:', error.message);
                 return { username: null };
             }
         };
-    
+
         if (token) {
-            
+
             fetchUserDetails();
             console.log('Hello!!!');
         } else {
@@ -171,18 +170,23 @@ export default function Sidebar2() {
                     </a>
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    {isLoggedIn ? ( // If user is logged in, display profile link
-                        <a href="/profile" className="text-sm font-semibold leading-6 text-black">
-                            Profile
-                        </a>
-                    ) : ( // Otherwise, display login link
-                        <a href="/login" className="text-sm font-semibold leading-6 text-black">
-                            Log in
-                        </a>
-                    )}
-                    {isLoggedIn && ( // If user is logged in, display username
-                        <span className="text-sm font-semibold leading-6 text-black ml-2">Welcome, {username}</span>
-                    )}
+                    <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+                        {isLoggedIn ? ( // If user is logged in, display profile link
+                            <div>
+                                <a href="/profile" className="text-sm font-semibold leading-6 text-white">
+                                    Profile
+                                </a>
+                                <button onClick={handleLogout} className="text-white">Logout</button>
+                            </div>
+                        ) : ( // Otherwise, display login link
+                            <a href="/login" className="text-sm font-semibold leading-6 text-white">
+                                Log in
+                            </a>
+                        )}
+                        {isLoggedIn && ( // If user is logged in, display username
+                            <span className="text-sm font-semibold leading-6 text-white ml-2">Welcome, {username}</span>
+                        )}
+                    </div>
                 </div>
             </nav>
 
