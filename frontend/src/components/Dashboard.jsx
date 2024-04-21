@@ -40,14 +40,14 @@ export default function Dashboard() {
               className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
               //onClick={onClick} // Pass the onClick function prop here
             >
-              <a href="/pethouses">Lets find a pethouse</a>
+              <a href="/Pethouses">Lets find a pethouse</a>
             </button>
             <button
   
               className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-              o // Pass the onClick function prop here
+              // Pass the onClick function prop here
             >
-              <a href="/pethouses">Lets Get You a Vet!</a>
+              <a href="/vetClinics">Lets Get You a Vet!</a>
             </button>
           </div>
           <button>
