@@ -164,7 +164,7 @@ export default function Sidebar() {
                             <button onClick={handleLogout} className="text-white">Logout</button>
                         </div>
                     ) : ( // Otherwise, display login link
-                        <a href="/login" className="text-sm font-semibold leading-6 text-white">
+                        <a href="/centrallogin" className="text-sm font-semibold leading-6 text-white">
                             Log in
                         </a>
                     )}

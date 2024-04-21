@@ -2,9 +2,32 @@ import { useState, useRef } from 'react';
 import Sidebar3 from "./Sidebar3";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 export default function AddPet() {
+
     const [currentIndex, setCurrentIndex] = useState(0);
+    // Define all your state variables and functions here...
+
+    const handleNextClick = async () => {
+        if (currentIndex === 4) {
+            // If it's the last step, make the API call
+            try {
+                const response = await axios.post('http://localhost:3001/api/pets/add', formData);
+                if (response.status === 200) {
+                    console.log('Pet added successfully:', response.data);
+                    window.location.href = '/profile';
+                } else {
+                    console.error('Failed to add pet:', response.data);
+
+                }
+            } catch (error) {
+                console.error('Error adding pet:', error);
+            }
+        } else {
+            setCurrentIndex(currentIndex + 1);
+        }
+    };
 
     const PetType = [
         {
@@ -40,19 +63,13 @@ export default function AddPet() {
             imgurl: 'src/assets/vetsvg.svg',
         },
     ];
-    const NameRef = useRef("");
-    const AgeRefYears = useRef("");
-    const AgeRefMonths = useRef("");
-    const PetWeightRef = useRef("");
-    const WillingRef = useRef("");
-    const SelectedRef = useRef("");
     const [formData, setFormData] = useState({
-        name: useRef(""),
-        ageYears: useRef(""),
-        ageMonths: useRef(""),
-        petWeight: useRef(""),
-        willingnessToTravel: useRef(""),
-        selected: useRef("")
+        name: "",
+        ageYears: "",
+        ageMonths: "",
+        petWeight: "",
+        willingnessToTravel: "",
+        selected: "",
     });
 
     const handleInputChange = (fieldName, value) => {
@@ -73,11 +90,11 @@ export default function AddPet() {
     const handleBreedClick = (opt) => {
         setSelectedBreed(opt);
     };
-    const [selectedTypeBreed,setSelectedTypeBreed]=useState("");
+    const [selectedTypeBreed, setSelectedTypeBreed] = useState("");
     const handleTypeBreedClick = (opt) => {
         setSelectedTypeBreed(opt);
     };
-    
+
     const Gender = [
         {
             id: 1,
@@ -107,14 +124,6 @@ export default function AddPet() {
     const handleGenderClick = (id) => {
         console.log('Gender clicked:', id);
         setSelectedGender(id);
-    };
-
-    const handleNextClick = () => {
-        if (currentIndex === 4) {
-            window.location.href = '/profile';
-        } else {
-            setCurrentIndex(currentIndex + 1);
-        }
     };
 
 
@@ -190,7 +199,7 @@ export default function AddPet() {
                                     What's your pet's name?
                                 </div>
                                 <input
-                                    ref={formData.name}
+
                                     type="text"
                                     className={`border-2 border-gray-400 rounded-lg px-8 py-2 w-50 h-10 mx-5 my-5`}
                                     placeholder="Enter your pet's name"
@@ -238,25 +247,25 @@ export default function AddPet() {
                                 What's your pet's breed?
                             </div>
                             <div className="flex items-center mt-4">
-                                    <button
-                                        className={`w-20 h-12  border border-gray-300 mx-2 ${selectedTypeBreed === "Purebred" ? 'bg-gray-500' : 'bg-white'}`}
-                                        onClick={() => handleTypeBreedClick("Purebred")}
-                                    >
-                                        Purebred
-                                    </button>
-                                    <button
-                                        className={`w-20 h-12 border border-gray-300 mx-2 ${selectedTypeBreed === "Crossbred" ? 'bg-gray-500' : 'bg-white'}`}
-                                        onClick={() => handleTypeBreedClick("Crossbred")}
-                                    >
-                                        Crossbred
-                                    </button>
+                                <button
+                                    className={`w-20 h-12  border border-gray-300 mx-2 ${selectedTypeBreed === "Purebred" ? 'bg-gray-500' : 'bg-white'}`}
+                                    onClick={() => handleTypeBreedClick("Purebred")}
+                                >
+                                    Purebred
+                                </button>
+                                <button
+                                    className={`w-20 h-12 border border-gray-300 mx-2 ${selectedTypeBreed === "Crossbred" ? 'bg-gray-500' : 'bg-white'}`}
+                                    onClick={() => handleTypeBreedClick("Crossbred")}
+                                >
+                                    Crossbred
+                                </button>
                             </div>
                             <div className="flex flex-col ">
                                 <div className='text-center text-2xl text-black font-bold mb-4'>
                                     Select specific breed
                                 </div>
                                 <select
-                                    ref={formData.selected}
+
                                     onChange={(e) => handleInputChange("selected", e.target.value)}
                                     placeholder="Enter your pet's breed"
                                     className="ml-2 border-2 border-gray-400 rounded-lg px-4 py-2"
@@ -344,7 +353,7 @@ export default function AddPet() {
                             <div className="flex flex-col items-center">
                                 <label htmlFor="pet-age-years" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
                                 <input
-                                    ref={formData.ageYears}
+
                                     onChange={(e) => handleInputChange("ageYears", e.target.value)}
                                     id="pet-age-years"
                                     type="number"
@@ -356,7 +365,7 @@ export default function AddPet() {
                             <div className="flex flex-col items-center">
                                 <label htmlFor="pet-age-months" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
                                 <input
-                                    ref={formData.ageMonths}
+
                                     onChange={(e) => handleInputChange("ageMonths", e.target.value)}
                                     id="pet-age-months"
                                     type="number"
@@ -374,7 +383,7 @@ export default function AddPet() {
                             <div className="flex flex-col items-center">
                                 <label htmlFor="pet-age-years" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
                                 <input
-                                    ref={formData.petWeight}
+
                                     onChange={(e) => handleInputChange("petWeight", e.target.value)}
                                     id="pet-weight"
                                     type="number"
@@ -407,7 +416,7 @@ export default function AddPet() {
                                     Willingness to travel?
                                 </div>
                                 <input
-                                    ref={formData.willingnessToTravel}
+
                                     onChange={(e) => handleInputChange("willingnessToTravel", e.target.value)}
                                     type="text"
                                     className={`border-2 border-gray-400 rounded-lg px-8 py-2 w-50 h-10 mx-5 my-5`}

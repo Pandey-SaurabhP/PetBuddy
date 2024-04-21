@@ -74,6 +74,15 @@ const petSchema = new mongoose.Schema({
     pet_name: {
         type: String
     },
+    pet_age: {
+        type: String
+    },
+    pet_weight: {
+        type: String
+    },
+    pet_willingness: {
+        type: String
+    },
     pet_type: {
         type: String
     },
@@ -83,7 +92,13 @@ const petSchema = new mongoose.Schema({
     pet_breed: {
         type: String
     },
+    pet_size: {
+        type: String
+    },
     pet_image: {
+        type: String
+    },
+    pet_gender: {
         type: String
     }
 });
@@ -119,7 +134,7 @@ const Booking = mongoose.model('Booking', bookingSchema);
 
 app.post('/api/bookings', async (req, res) => {
     const { username } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     try {
         // Find all bookings associated with the provided username
@@ -138,7 +153,7 @@ app.post('/api/bookings', async (req, res) => {
 
 app.post('/api/bookings/add', async (req, res) => {
     const { username, pet_name, datetime_of_booking, type, time_slot, pethouse_id, start_time, end_time } = req.body; // Added pethouse_id
-    console.log('Received request : ', req.body);
+    // console.log('Received request : ', req.body);
 
     try {
         // Generate payment ID (you can use any method to generate a unique ID)
@@ -196,6 +211,34 @@ app.post('/api/pets', async (req, res) => {
     }
 });
 
+app.post('/api/pets/add', (req, res) => {
+    // Destructure the request body to get the data for the new pet
+    const { name, ageYears, ageMonths, petWeight, willingnessToTravel, selected } = req.body;
+
+    // Create a new pet document based on the request body
+    const newPet = new Pet({
+        pet_name: name,
+        pet_type: selected,
+        user_name: 's', // Assuming you have a way to identify the user
+        pet_breed: 'Labrador', // Assuming you have a default breed or another way to get this data
+        // Assuming you have a way to handle the image data
+        pet_image: 'https://placekitten.com/200/300'
+    });
+
+    // Save the new pet document to the database
+    newPet.save()
+        .then(() => {
+            // Send a success response back to the client
+            res.status(200).json({ message: 'Pet added successfully' });
+        })
+        .catch((error) => {
+            // If there's an error saving the pet data, send an error response
+            console.error('Error saving pet data:', error);
+            res.status(500).json({ error: 'Failed to add pet' });
+        });
+});
+
+
 
 
 app.get('/api/centers', async (req, res) => {
@@ -224,7 +267,7 @@ app.post('/api/userData', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        console.log(userData);
+        // console.log(userData);
         res.json(userData); // Send the user data as response
     } catch (error) {
         console.error('Error retrieving user data:', error);
@@ -288,20 +331,48 @@ app.post('/api/user', (req, res) => {
         }
         const decodedToken = token.split(' ')[1];
 
-        console.log('Decoded Token:', decodedToken);
+        // console.log('Decoded Token:', decodedToken);
 
         const decoded = jwt.verify(decodedToken, secretKey);
         if (Date.now() >= decoded.exp * 1000) {
             throw new Error('Token expired');
         }
 
-        console.log('Decoded:', decoded);
+        // console.log('Decoded:', decoded);
         res.json({ username: decoded.username });
     } catch (error) {
         console.error('Error decoding token:', error);
         res.status(401).json({ message: 'Unauthorized' });
     }
 });
+
+const vetSchema = new mongoose.Schema({
+    vet_name: {
+        type: String,
+        required: true
+    },
+    vet_address: {
+        type: String,
+        required: true
+    },
+    vet_mobile: {
+        type: String,
+        required: true
+    },
+    education: {
+        type: String
+    },
+    start_time: {
+        type: String
+    },
+    end_time: {
+        type: String
+    },
+    vet_fees: {
+        type: String
+    }
+});
+const Vet = mongoose.model('Vet', vetSchema);
 
 
 

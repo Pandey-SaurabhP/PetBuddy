@@ -6,6 +6,7 @@ import { FaSignInAlt } from 'react-icons/fa'; // FontAwesome icon for the login 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); // State to hold error message
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -20,6 +21,12 @@ const LoginForm = () => {
             console.log('Logged in successfully!');
             navigate('/home'); // Redirect after successful login
         } catch (error) {
+            // Handle authentication errors
+            if (error.response && error.response.status === 401) {
+                setErrorMessage('Invalid username or password');
+            } else {
+                setErrorMessage('Login failed. Please try again later.');
+            }
             console.error('Login failed:', error);
         }
     };
@@ -47,6 +54,9 @@ const LoginForm = () => {
                             className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600"
                         />
                     </div>
+                    {errorMessage && (
+                        <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+                    )}
                     <div className="flex items-center justify-between mt-6">
                         <button
                             type="submit"

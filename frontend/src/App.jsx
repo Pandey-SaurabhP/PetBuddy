@@ -9,6 +9,7 @@ import AddPetInfo from "./components/AddPet";
 import LoginForm from "./components/LoginPage";
 import SignupForm from "./components/SignupPage";
 import PetHouseProfile from "./components/PethouseProfile";
+import CentralLogin from "./components/CentralLogin";
 function App() {
   return (
     <>
@@ -23,6 +24,7 @@ function App() {
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/signup" element={<SignupForm/>}/>
         <Route path="/addpet" element={<AddPetInfo/>}/>
+        <Route path="/centrallogin" element={<CentralLogin/>}/>
         <Route path="/petHouseProfile" element={<PetHouseProfile />}/>
       </Routes>
       </BrowserRouter>
