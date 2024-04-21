@@ -235,7 +235,7 @@ app.post('/api/userData', async (req, res) => {
 
 
 app.post('/api/signup', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, user_address, mobile_number } = req.body;
 
     try {
         const existingUser = await Users.findOne({ user_name: username });
@@ -245,8 +245,6 @@ app.post('/api/signup', async (req, res) => {
 
         const user_id = uuid.v4();
 
-        const user_address = "123 Main Street, Cityville, USA";
-        const mobile_number = "123-456-7890";
 
         const newUser = new Users({ user_id, user_name: username, password, user_address, mobile_number });
         await newUser.save();

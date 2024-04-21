@@ -6,14 +6,20 @@ import { FaUserPlus } from 'react-icons/fa'; // FontAwesome icon for the signup 
 const SignupForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [userAddress, setUserAddress] = useState('');
+    const [mobileNumber, setMobileNumber] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            console.log(username, password, userAddress, mobileNumber);
+            
             const response = await axios.post('http://localhost:3001/api/signup', {
                 username,
                 password,
+                user_address: userAddress,
+                mobile_number: mobileNumber
             });
             console.log('User signed up successfully!');
             navigate('/login'); // Redirect after successful signup
@@ -43,6 +49,24 @@ const SignupForm = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600"
+                        />
+                    </div>
+                    <div className="mt-4">
+                        <label className="block text-sm text-gray-600 dark:text-gray-200">Address</label>
+                        <input
+                            type="text"
+                            value={userAddress}
+                            onChange={(e) => setUserAddress(e.target.value)}
+                            className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600"
+                        />
+                    </div>
+                    <div className="mt-4">
+                        <label className="block text-sm text-gray-600 dark:text-gray-200">Mobile Number</label>
+                        <input
+                            type="text"
+                            value={mobileNumber}
+                            onChange={(e) => setMobileNumber(e.target.value)}
+                            className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600"
                         />
                     </div>
                     <div className="flex items-center justify-between mt-6">
