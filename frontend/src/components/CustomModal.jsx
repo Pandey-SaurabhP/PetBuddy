@@ -109,84 +109,90 @@ export default function CustomModal({ modalOpen, funcHandle, booking, handleBook
                     </button>
                 </div>
 
-                {/* Form for booking */}
-                <form onSubmit={handleSubmit} className="p-4">
-                    {/* Select Pet */}
-                    <div className="mb-4">
-                        <label htmlFor="pet-select" className="block text-sm font-medium text-gray-900 dark:text-white">
-                            Select Pet
-                        </label>
-                        <select
-                            id="pet-select"
-                            value={selectedPetId}
-                            onChange={(e) => setSelectedPetId(e.target.value)}
-                            className="w-full p-2.5 border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                {localStorage.getItem('token') ? (
+                    <form onSubmit={handleSubmit} className="p-4">
+                        {/* Select Pet */}
+                        <div className="mb-4">
+                            <label htmlFor="pet-select" className="block text-sm font-medium text-gray-900 dark:text-white">
+                                Select Pet
+                            </label>
+                            <select
+                                id="pet-select"
+                                value={selectedPetId}
+                                onChange={(e) => setSelectedPetId(e.target.value)}
+                                className="w-full p-2.5 border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            >
+                                <option value="">Select a pet</option>
+                                {userPets.map((pet) => (
+                                    <option key={pet.pet_id} value={pet.pet_id}>
+                                        {pet.pet_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* DatePicker for start date */}
+                        <div className="mb-4">
+                            <label htmlFor="start-date" className="block text-sm font-medium text-gray-900 dark:text-white">
+                                Start Date
+                            </label>
+                            <input
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                id="start-date"
+                                required
+                                className="w-full p-2.5 border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+
+                        {/* DatePicker for end date */}
+                        <div className="mb-4">
+                            <label htmlFor="end-date" className="block text-sm font-medium text-gray-900 dark:text-white">
+                                End Date
+                            </label>
+                            <input
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                id="end-date"
+                                required
+                                className="w-full p-2.5 border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            />
+                        </div>
+
+                        {/* Pickup time selection */}
+                        <div className="mb-4">
+                            <label htmlFor="pickup-time" className="block text-sm font-medium text-gray-900 dark:text-white">
+                                Pickup Time
+                            </label>
+                            <select
+                                id="pickup-time"
+                                ref={timeRef}
+                                className="w-full p-2.5 border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
+                            >
+                                <option value="09:00">09:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                            </select>
+                        </div>
+
+                        {/* Submit button */}
+                        <button
+                            type="submit"
+                            onClick={handleSubmit}
+                            className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2.5 focus:outline-none focus:ring-primary-600"
                         >
-                            <option value="">Select a pet</option>
-                            {userPets.map((pet) => (
-                                <option key={pet.pet_id} value={pet.pet_id}>
-                                    {pet.pet_name}
-                                </option>
-                            ))}
-                        </select>
+                            Book Pet
+                        </button>
+                    </form>
+                ) : (
+                    <div className="p-4">
+                        <p className="text-gray-900 dark:text-white">Please login to proceed with the booking.</p>
                     </div>
-
-                    {/* DatePicker for start date */}
-                    <div className="mb-4">
-                        <label htmlFor="start-date" className="block text-sm font-medium text-gray-900 dark:text-white">
-                            Start Date
-                        </label>
-                        <input
-                            type="date"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                            id="start-date"
-                            required
-                            className="w-full p-2.5 border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
-                        />
-                    </div>
-
-                    {/* DatePicker for end date */}
-                    <div className="mb-4">
-                        <label htmlFor="end-date" className="block text-sm font-medium text-gray-900 dark:text-white">
-                            End Date
-                        </label>
-                        <input
-                            type="date"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                            id="end-date"
-                            required
-                            className="w-full p-2.5 border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
-                        />
-                    </div>
-
-                    {/* Pickup time selection */}
-                    <div className="mb-4">
-                        <label htmlFor="pickup-time" className="block text-sm font-medium text-gray-900 dark:text-white">
-                            Pickup Time
-                        </label>
-                        <select
-                            id="pickup-time"
-                            ref={timeRef}
-                            className="w-full p-2.5 border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600"
-                        >
-                            <option value="09:00">09:00 AM</option>
-                            <option value="10:00">10:00 AM</option>
-                            <option value="11:00">11:00 AM</option>
-                        </select>
-                    </div>
-
-                    {/* Submit button */}
-                    <button
-                        type="submit"
-                        onClick={handleSubmit}
-                        className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2.5 focus:outline-none focus:ring-primary-600"
-                    >
-                        Book Pet
-                    </button>
-                </form>
+                )}
             </div>
         </div>
+
     );
 }

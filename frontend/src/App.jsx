@@ -8,6 +8,7 @@ import TY from "./components/ty"
 import AddPetInfo from "./components/AddPet";
 import LoginForm from "./components/LoginPage";
 import SignupForm from "./components/SignupPage";
+import PetHouseProfile from "./components/PethouseProfile";
 function App() {
   return (
     <>
@@ -22,7 +23,7 @@ function App() {
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/signup" element={<SignupForm/>}/>
         <Route path="/addpet" element={<AddPetInfo/>}/>
-
+        <Route path="/petHouseProfile" element={<PetHouseProfile />}/>
       </Routes>
       </BrowserRouter>
 
