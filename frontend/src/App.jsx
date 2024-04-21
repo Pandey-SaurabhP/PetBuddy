@@ -22,6 +22,8 @@ function App() {
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/signup" element={<SignupForm/>}/>
         <Route path="/addpet" element={<AddPetInfo/>}/>
+        <Route path="/petHouseProfile" element={<AddPetInfo/>}/>
+
 
       </Routes>
       </BrowserRouter>
