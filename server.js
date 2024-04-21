@@ -218,7 +218,7 @@ app.post('/api/pets/add', (req, res) => {
     // Create a new pet document based on the request body
     const newPet = new Pet({
         pet_name: name,
-        pet_type: selected,
+        pet_type: (selected == 1? "Dog": (selected == 2? "Cat": (selected == 3? "Rabbit": "Rodent"))),
         user_name: 's', // Assuming you have a way to identify the user
         pet_breed: 'Labrador', // Assuming you have a default breed or another way to get this data
         // Assuming you have a way to handle the image data
