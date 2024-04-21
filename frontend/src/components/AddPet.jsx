@@ -40,19 +40,13 @@ export default function AddPet() {
             imgurl: 'src/assets/vetsvg.svg',
         },
     ];
-    const NameRef = useRef("");
-    const AgeRefYears = useRef("");
-    const AgeRefMonths = useRef("");
-    const PetWeightRef = useRef("");
-    const WillingRef = useRef("");
-    const SelectedRef = useRef("");
     const [formData, setFormData] = useState({
-        name: useRef(""),
-        ageYears: useRef(""),
-        ageMonths: useRef(""),
-        petWeight: useRef(""),
-        willingnessToTravel: useRef(""),
-        selected: useRef("")
+        name: "",
+        ageYears: "",
+        ageMonths: "",
+        petWeight: "",
+        willingnessToTravel: "",
+        selected: "",
     });
 
     const handleInputChange = (fieldName, value) => {
@@ -190,7 +184,7 @@ export default function AddPet() {
                                     What's your pet's name?
                                 </div>
                                 <input
-                                    ref={formData.name}
+                                    
                                     type="text"
                                     className={`border-2 border-gray-400 rounded-lg px-8 py-2 w-50 h-10 mx-5 my-5`}
                                     placeholder="Enter your pet's name"
@@ -256,7 +250,7 @@ export default function AddPet() {
                                     Select specific breed
                                 </div>
                                 <select
-                                    ref={formData.selected}
+                                    
                                     onChange={(e) => handleInputChange("selected", e.target.value)}
                                     placeholder="Enter your pet's breed"
                                     className="ml-2 border-2 border-gray-400 rounded-lg px-4 py-2"
@@ -344,7 +338,7 @@ export default function AddPet() {
                             <div className="flex flex-col items-center">
                                 <label htmlFor="pet-age-years" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
                                 <input
-                                    ref={formData.ageYears}
+                                    
                                     onChange={(e) => handleInputChange("ageYears", e.target.value)}
                                     id="pet-age-years"
                                     type="number"
@@ -356,7 +350,7 @@ export default function AddPet() {
                             <div className="flex flex-col items-center">
                                 <label htmlFor="pet-age-months" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
                                 <input
-                                    ref={formData.ageMonths}
+                                    
                                     onChange={(e) => handleInputChange("ageMonths", e.target.value)}
                                     id="pet-age-months"
                                     type="number"
@@ -374,7 +368,7 @@ export default function AddPet() {
                             <div className="flex flex-col items-center">
                                 <label htmlFor="pet-age-years" className="text-md font-medium text-gray-900 dark:text-gray-300"></label>
                                 <input
-                                    ref={formData.petWeight}
+                                    
                                     onChange={(e) => handleInputChange("petWeight", e.target.value)}
                                     id="pet-weight"
                                     type="number"
@@ -407,7 +401,7 @@ export default function AddPet() {
                                     Willingness to travel?
                                 </div>
                                 <input
-                                    ref={formData.willingnessToTravel}
+                                    
                                     onChange={(e) => handleInputChange("willingnessToTravel", e.target.value)}
                                     type="text"
                                     className={`border-2 border-gray-400 rounded-lg px-8 py-2 w-50 h-10 mx-5 my-5`}
