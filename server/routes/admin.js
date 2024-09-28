@@ -92,4 +92,17 @@ router.get('/bookings', async (req, res) => {
     }
 });
 
+router.get('/me', async (req, res) => {
+    try {
+        const admin = await Admin.findById(req.adminId).select('-password'); // Exclude password from response
+        if (!admin) {
+            return res.status(404).json({ message: "Admin not found" });
+        }
+        res.status(200).json(admin);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
 module.exports = router;
