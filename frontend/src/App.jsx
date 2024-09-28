@@ -9,7 +9,10 @@ import AddPetInfo from "./components/AddPet";
 import LoginForm from "./components/LoginPage";
 import SignupForm from "./components/SignupPage";
 import PetHouseProfile from "./components/PethouseProfile";
-
+import AdminProfile from "./PetHouses/Profile";
+import PetHousesLogin from "./PetHouses/Login";
+import PetHousesSignUp from "./PetHouses/SignUp";
+import AdminDashboard from "./PetHouses/Dashboard";
 import CentralLogin from "./components/CentralLogin";
 import VetClinics from "./components/VetClinics"
 import AdminLogin from "./components/AdminLogin";
@@ -29,6 +32,10 @@ function App() {
         <Route path="/signup" element={<SignupForm/>}/>
         <Route path="/addpet" element={<AddPetInfo/>}/>
         <Route path="/centrallogin" element={<CentralLogin/>}/>
+        <Route path="/AdminLogin" element={<PetHousesLogin/>}/>
+        <Route path="/AdminSignUp" element={<PetHousesSignUp/>}/>
+        <Route path="/AdminProfile" element={<AdminProfile />}/>
+        <Route path="/AdminDashboard" element={<AdminDashboard />}/>
         <Route path="/petHouseProfile" element={<PetHouseProfile />}/>
         <Route path="/vetClinics" element={<VetClinics />}/>
 
