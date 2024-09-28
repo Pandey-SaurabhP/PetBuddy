@@ -12,6 +12,8 @@ import PetHouseProfile from "./components/PethouseProfile";
 
 import CentralLogin from "./components/CentralLogin";
 import VetClinics from "./components/VetClinics"
+import AdminLogin from "./components/AdminLogin";
+import AdminSignup from "./components/AdminSignup";
 function App() {
   return (
     <>
@@ -29,6 +31,9 @@ function App() {
         <Route path="/centrallogin" element={<CentralLogin/>}/>
         <Route path="/petHouseProfile" element={<PetHouseProfile />}/>
         <Route path="/vetClinics" element={<VetClinics />}/>
+
+        <Route path="/adminSignup" element={<AdminSignup />}/>
+        <Route path="/adminLogin" element={<AdminLogin />}/>
       </Routes>
       </BrowserRouter>
 

@@ -6,6 +6,16 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const uuid = require('uuid');
 
+const Users = require("./server/models/user");
+const Center = require("./server/models/center");
+const Pet = require("./server/models/pet");
+const Booking = require("./server/models/booking");
+const Vet = require("./server/models/vet");
+
+
+const adminRoutes = require('./server/routes/admin');
+
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -13,6 +23,8 @@ const secretKey = 'xyz'; // Secret key for JWT
 
 app.use(bodyParser.json());
 app.use(cors());
+
+app.use('/api/admin', adminRoutes);
 
 const uri = 'mongodb+srv://pandeygrocks:Saurabh04@maindb.ijbfr2l.mongodb.net/petbuddy?retryWrites=true&w=majority';
 
@@ -26,111 +38,6 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
         console.error('Error connecting to MongoDB:', error);
     });
 
-const userSchema = new mongoose.Schema({
-    user_id: {
-        type: String
-    },
-    password: {
-        type: String
-    },
-    user_name: {
-        type: String
-    },
-    user_address: {
-        type: String
-    },
-    mobile_number: {
-        type: String
-    }
-});
-const Users = mongoose.model('Users', userSchema);
-
-const centerSchema = new mongoose.Schema({
-    name: {
-        type: String
-    },
-    latitude: {
-        type: Number
-    },
-    longitude: {
-        type: Number
-    },
-    address: {
-        type: String
-    },
-    rating: {
-        type: String
-    },
-    price: {
-        type: String
-    },
-});
-const Center = mongoose.model('Center', centerSchema);
-
-const petSchema = new mongoose.Schema({
-    pet_id: {
-        type: String
-    },
-    pet_name: {
-        type: String
-    },
-    pet_age: {
-        type: String
-    },
-    pet_weight: {
-        type: String
-    },
-    pet_willingness: {
-        type: String
-    },
-    pet_type: {
-        type: String
-    },
-    user_name: {
-        type: String
-    },
-    pet_breed: {
-        type: String
-    },
-    pet_size: {
-        type: String
-    },
-    pet_image: {
-        type: String
-    },
-    pet_gender: {
-        type: String
-    }
-});
-const Pet = mongoose.model('Pet', petSchema);
-
-const bookingSchema = new mongoose.Schema({
-    user_name: {
-        type: String
-    },
-    pet_name: {
-        type: String
-    },
-    datetime_of_booking: {
-        type: Date
-    },
-    type: {
-        type: String
-    },
-    start_date: {
-        type: Date
-    },
-    end_date: {
-        type: Date
-    },
-    payment_id: {
-        type: String
-    },
-    pethouse_id: {
-        type: String
-    }
-});
-const Booking = mongoose.model('Booking', bookingSchema);
 
 app.post('/api/bookings', async (req, res) => {
     const { username } = req.body;
@@ -183,7 +90,6 @@ app.post('/api/bookings/add', async (req, res) => {
 
 
 const generatePaymentID = () => {
-    // Generate a random alphanumeric string (you can use any method to generate a unique ID)
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let paymentID = '';
     for (let i = 0; i < 10; i++) {
@@ -358,36 +264,6 @@ app.post('/api/user', (req, res) => {
         res.status(401).json({ message: 'Unauthorized' });
     }
 });
-
-const vetSchema = new mongoose.Schema({
-    vet_name: {
-        type: String,
-        required: true
-    },
-    vet_address: {
-        type: String,
-        required: true
-    },
-    vet_mobile: {
-        type: String,
-        required: true
-    },
-    education: {
-        type: String
-    },
-    start_time: {
-        type: String
-    },
-    end_time: {
-        type: String
-    },
-    vet_fees: {
-        type: String
-    }
-});
-const Vet = mongoose.model('Vet', vetSchema);
-
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
