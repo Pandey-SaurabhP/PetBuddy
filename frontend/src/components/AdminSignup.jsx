@@ -31,20 +31,97 @@ const AdminSignup = () => {
     };
 
     return (
-        <div>
-            <h2>Admin Signup</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="admin_id" placeholder="Admin ID" onChange={handleChange} required />
-                <input type="text" name="user_name" placeholder="Username" onChange={handleChange} required />
-                <input type="text" name="pethouse_name" placeholder="Pet House Name" onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-                <input type="text" name="mobile_no" placeholder="Mobile Number" onChange={handleChange} required />
-                <input type="email" name="email_id" placeholder="Email" onChange={handleChange} required />
-                <input type="text" name="rating" placeholder="Rating (0-5)" onChange={handleChange} required />
-                <input type="text" name="price" placeholder="Price" onChange={handleChange} required />
-                <input type="text" name="services" placeholder="Services (comma separated)" onChange={handleChange} required />
-                <button type="submit">Sign Up</button>
-            </form>
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-300 to-blue-500">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md m-10">
+                <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Admin Signup</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="flex flex-col">
+                        <label className="font-semibold text-gray-700">Username</label>
+                        <input
+                            type="text"
+                            name="user_name"
+                            placeholder="Enter your username"
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold text-gray-700">Pet House Name</label>
+                        <input
+                            type="text"
+                            name="pethouse_name"
+                            placeholder="Enter your Pet House name"
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold text-gray-700">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold text-gray-700">Mobile Number</label>
+                        <input
+                            type="text"
+                            name="mobile_no"
+                            placeholder="Enter your mobile number"
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold text-gray-700">Email</label>
+                        <input
+                            type="email"
+                            name="email_id"
+                            placeholder="Enter your email"
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold text-gray-700">Price</label>
+                        <input
+                            type="text"
+                            name="price"
+                            placeholder="Enter price for services"
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold text-gray-700">Services</label>
+                        <input
+                            type="text"
+                            name="services"
+                            placeholder="Enter services (comma-separated)"
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                    </div>
+                    <div className="flex justify-center mt-6">
+                        <button
+                            type="submit"
+                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                        >
+                            Sign Up
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

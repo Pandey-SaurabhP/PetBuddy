@@ -32,8 +32,8 @@ function App() {
         <Route path="/signup" element={<SignupForm/>}/>
         <Route path="/addpet" element={<AddPetInfo/>}/>
         <Route path="/centrallogin" element={<CentralLogin/>}/>
-        <Route path="/AdminLogin" element={<PetHousesLogin/>}/>
-        <Route path="/AdminSignUp" element={<PetHousesSignUp/>}/>
+        {/* <Route path="/AdminLogin" element={<PetHousesLogin/>}/>
+        <Route path="/AdminSignUp" element={<PetHousesSignUp/>}/> */}
         <Route path="/AdminProfile" element={<AdminProfile />}/>
         <Route path="/AdminDashboard" element={<AdminDashboard />}/>
         <Route path="/petHouseProfile" element={<PetHouseProfile />}/>
