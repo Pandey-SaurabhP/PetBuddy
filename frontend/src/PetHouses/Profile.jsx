@@ -1,4 +1,4 @@
-import Sidebar2 from "../components/Sidebar2";
+import Sidebar2 from "./Sidebar";
 import Cat from "../assets/cats.jpg";
 import Footer from "../components/Footer";
 

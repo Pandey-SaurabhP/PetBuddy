@@ -43,6 +43,21 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+//get all pethouse
+
+router.get('/pethouses', async (req, res) => {
+    try {
+        // Fetch all pet houses from the database
+        const petHouses = await Admin.find({}, 'pethouse_name user_name mobile_no email_id'); // Modify fields as needed
+
+        // Return the fetched data
+        res.status(200).json({ petHouses });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error", error });
+    }
+});
+
 // Admin SignIn
 router.post('/signin', async (req, res) => {
     const { email_id, password } = req.body;
@@ -71,10 +86,9 @@ router.post('/signin', async (req, res) => {
 });
 
 // Load all bookings associated with current admin
-router.get('/bookings', async (req, res) => {
+router.post('/bookings', async (req, res) => {
     try {
-        // Assuming that the authMiddleware attaches the adminId to the request object
-        const adminId = req.adminId;
+        const { adminId } = req.body; // Get adminId from request body
 
         // Find admin by ID
         const admin = await Admin.findById(adminId);
@@ -83,9 +97,29 @@ router.get('/bookings', async (req, res) => {
         }
 
         // Load all bookings associated with the admin's pethouse
-        const bookings = await Booking.find({ pethouse_id: admin.admin_id });
+        const bookings = await Booking.find({ pethouse_id: admin.pethouse_id });
+
+        res.status(200).json(bookings);  // Send bookings as an array
+
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error });
+    }
+});
+router.get('/bookings/:adminId', async (req, res) => {
+    try {
         
-        res.status(200).json({ bookings });
+        const { adminId } = req.params; // Get adminId from the URL parameters
+        console.log(adminId);
+        // Find admin by ID
+        const admin = await Admin.findById(adminId);
+        if (!admin) {
+            return res.status(404).json({ message: "Admin not found" });
+        }
+
+        // Load all bookings associated with the admin's pethouse
+        const bookings = await Booking.find({ pethouse_id: admin.pethouse_id });
+
+        res.status(200).json(bookings);  // Send bookings as an array
 
     } catch (error) {
         res.status(500).json({ message: "Server error", error });

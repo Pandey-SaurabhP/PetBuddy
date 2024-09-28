@@ -1,34 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 
 const Bookings = () => {
-    
-    const bookings = [
-        {
-            _id: '1',
-            service: 'Pet Grooming',
-            user: { name: 'Alice' },
-            date: '2024-09-28',
-            status: 'Confirmed',
-            createdAt: '2024-09-01',
-        },
-        {
-            _id: '2',
-            service: 'Vet Consultation',
-            user: { name: 'Bob' },
-            date: '2024-09-29',
-            status: 'Pending',
-            createdAt: '2024-09-02',
-        },
-        {
-            _id: '3',
-            service: 'Pet Boarding',
-            user: { name: 'Charlie' },
-            date: '2024-09-30',
-            status: 'Completed',
-            createdAt: '2024-09-03',
-        },
-    ];
+    const [bookings, setBookings] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // Fetch data from API
+        const fetchBookings = async () => {
+            try {
+                const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+                const adminId = JSON.parse(atob(token.split('.')[1])).adminId; // Decode JWT to extract adminId
+                console.log(adminId);
+                
+                const response = await fetch(`http://localhost:3001/api/admin/bookings/${adminId}`, {
+                    method: 'GET', // Use GET to fetch data
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // Include the JWT token
+                    },
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    setBookings(data); // Set the bookings data received from the API
+                    setLoading(false);
+                } else {
+                    console.error('Failed to fetch bookings');
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchBookings();
+    }, []);
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <div>
@@ -42,12 +53,12 @@ const Bookings = () => {
                             className="relative bg-white border-2 border-gray-300 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                             style={{ paddingBottom: '80px' }} 
                         >
-                           
-                            <h3 className="text-xl font-semibold mb-2">Service: {booking.service}</h3>
-                            <p className="mb-1"><strong>User:</strong> {booking.user.name}</p>
-                            <p className="mb-1"><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
-                            <p className="mb-1"><strong>Status:</strong> {booking.status}</p>
-                            <p className="text-sm text-gray-500 mb-4">Created on: {new Date(booking.createdAt).toLocaleDateString()}</p>
+                            <h3 className="text-xl font-semibold mb-2">Service: {booking.type}</h3>
+                            <p className="mb-1"><strong>User:</strong> {booking.user_name}</p>
+                            <p className="mb-1"><strong>Pet:</strong> {booking.pet_name}</p>
+                            <p className="mb-1"><strong>Start Date:</strong> {new Date(booking.start_date).toLocaleDateString()}</p>
+                            <p className="mb-1"><strong>End Date:</strong> {new Date(booking.end_date).toLocaleDateString()}</p>
+                            <p className="text-sm text-gray-500 mb-4">Booking Date: {new Date(booking.datetime_of_booking).toLocaleDateString()}</p>
 
                             <button className="absolute top-4 right-4 bg-red-500 text-white p-3 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">

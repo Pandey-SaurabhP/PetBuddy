@@ -11,6 +11,9 @@ export default function CentralLogin() {
     const handlePetLoginClick = () => {
         navigate('/AdminLogin');
     };
+    const handleAdminSignup=()=>{
+        navigate('/AdminSignup');
+    }
     
     return (
         <>
@@ -35,9 +38,10 @@ export default function CentralLogin() {
                         </button>
                         <h2 className=" text-lg font-serif mt-20 mb-16 text-white">
                             Don't Have Account?{" "}
-                            <a href="" className=" text-teal-400">
-                                SignUP
-                            </a>
+                            <button onClick={handleAdminSignup} className=" text-teal-400">
+                                SignUp
+                            </button>
+                            
                         </h2>
                     </div>
                     <div className=" w-1/3  pt-40  bg-blue-gray-700 text">

@@ -175,10 +175,17 @@ export default function Sidebar2() {
                             </Popover.Panel>
                         </Transition>
                     </Popover>
-                    <a href="/adminBooking" className="text-sm font-semibold leading-6 text-black">
-                        Your Bookings
+
+                    <a href="/features" className="text-sm font-semibold leading-6 text-black">
+                        Features
                     </a>
-                    <a href="/AdminProfile" className="text-sm font-semibold leading-6 text-black">
+                    <a href="/pethouses" className="text-sm font-semibold leading-6 text-black">
+                        Pet Houses
+                    </a>
+                    <a href="/home" className="text-sm font-semibold leading-6 text-black">
+                        Company
+                    </a>
+                    <a href="/profile" className="text-sm font-semibold leading-6 text-black">
                                     Profile
                                 </a>
                 </Popover.Group>
