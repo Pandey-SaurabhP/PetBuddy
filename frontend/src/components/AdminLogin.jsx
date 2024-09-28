@@ -25,15 +25,6 @@ const AdminLogin = () => {
     };
 
     return (
-<<<<<<< HEAD
-        <div>
-            <h2>Admin Login</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="email" name="email_id" placeholder="Email" onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-                <button type="submit">Login</button>
-            </form>
-=======
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-500">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
@@ -70,7 +61,6 @@ const AdminLogin = () => {
                     </div>
                 </form>
             </div>
->>>>>>> 35994aa7582ec5c2b32cbf46a91482cb23e243c1
         </div>
     );
 };
