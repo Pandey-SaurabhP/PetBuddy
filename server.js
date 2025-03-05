@@ -13,6 +13,9 @@ const Vet = require("./server/models/vet");
 
 const adminRoutes = require("./server/routes/admin");
 
+require("dotenv").config();
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -24,291 +27,319 @@ app.use(cors());
 app.use("/api/admin", adminRoutes);
 
 const uri =
-    "mongodb+srv://pandeygrocks:Saurabh04@maindb.ijbfr2l.mongodb.net/petbuddy?retryWrites=true&w=majority";
+  "mongodb+srv://pandeygrocks:Saurabh04@maindb.ijbfr2l.mongodb.net/petbuddy?retryWrites=true&w=majority";
 
 mongoose
-    .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(async () => {
-        console.log("Connected to MongoDB");
-    })
-    .catch((error) => {
-        console.error("Error connecting to MongoDB:", error);
-    });
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(async () => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
 
 app.post("/api/bookings", async (req, res) => {
-    const { username } = req.body;
-    console.log("API/Booking Called : ", req.body);
+  const { username } = req.body;
+  console.log("API/Booking Called : ", req.body);
 
-    try {
-        // Find all bookings associated with the provided username
-        const bookings = await Booking.find({ user_name: username });
+  try {
+    // Find all bookings associated with the provided username
+    const bookings = await Booking.find({ user_name: username });
 
-        if (bookings.length === 0) {
-            return res
-                .status(404)
-                .json({
-                    message: "No bookings found for the provided username",
-                });
-        }
-
-        res.json(bookings);
-    } catch (error) {
-        console.error("Error retrieving bookings:", error);
-        res.status(500).json({ message: "Internal server error" });
+    if (bookings.length === 0) {
+      return res.status(404).json({
+        message: "No bookings found for the provided username",
+      });
     }
+
+    res.json(bookings);
+  } catch (error) {
+    console.error("Error retrieving bookings:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 app.post("/api/bookings/add", async (req, res) => {
-    const {
-        username,
-        pet_name,
-        datetime_of_booking,
-        type,
-        time_slot,
-        pethouse_id,
-        start_time,
-        end_time,
-    } = req.body; // Added pethouse_id
+  const {
+    username,
+    pet_name,
+    datetime_of_booking,
+    type,
+    time_slot,
+    pethouse_id,
+    start_time,
+    end_time,
+  } = req.body; // Added pethouse_id
 
-    try {
-        // Generate payment ID (you can use any method to generate a unique ID)
-        const payment_id = generatePaymentID();
+  try {
+    // Generate payment ID (you can use any method to generate a unique ID)
+    const payment_id = generatePaymentID();
 
-        // Create a new booking record
-        const newBooking = new Booking({
-            user_name: username,
-            pet_name,
-            datetime_of_booking,
-            type,
-            time_slot,
-            payment_id,
-            pethouse_id,
-            start_date: start_time,
-            end_date: end_time,
-        });
+    // Create a new booking record
+    const newBooking = new Booking({
+      user_name: username,
+      pet_name,
+      datetime_of_booking,
+      type,
+      time_slot,
+      payment_id,
+      pethouse_id,
+      start_date: start_time,
+      end_date: end_time,
+    });
 
-        // Save the booking record to the database
-        const savedBooking = await newBooking.save();
+    // Save the booking record to the database
+    const savedBooking = await newBooking.save();
 
-        res.status(201).json(savedBooking);
-    } catch (error) {
-        console.error("Error adding booking:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+    res.status(201).json(savedBooking);
+  } catch (error) {
+    console.error("Error adding booking:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 const generatePaymentID = () => {
-    const characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let paymentID = "";
-    for (let i = 0; i < 10; i++) {
-        paymentID += characters.charAt(
-            Math.floor(Math.random() * characters.length)
-        );
-    }
-    return paymentID;
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let paymentID = "";
+  for (let i = 0; i < 10; i++) {
+    paymentID += characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
+  }
+  return paymentID;
 };
 
 app.post("/api/pets", async (req, res) => {
-    const { user_name } = req.body;
+  const { user_name } = req.body;
 
-    console.log("API Pets called", user_name);
+  console.log("API Pets called", user_name);
 
-    try {
-        // Find all pets associated with the provided user_name
-        const pets = await Pet.find({ user_name });
+  try {
+    // Find all pets associated with the provided user_name
+    const pets = await Pet.find({ user_name });
 
-        if (!pets || pets.length === 0) {
-            return res
-                .status(404)
-                .json({ message: "No pets found for the provided user_name" });
-        }
-
-        console.log("dvahdavhasv : ", pets);
-
-        res.json(pets);
-    } catch (error) {
-        console.error("Error retrieving pet information:", error);
-        res.status(500).json({ message: "Internal server error" });
+    if (!pets || pets.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No pets found for the provided user_name" });
     }
+
+    console.log("dvahdavhasv : ", pets);
+
+    res.json(pets);
+  } catch (error) {
+    console.error("Error retrieving pet information:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 app.post("/api/pets/add", (req, res) => {
-    // Destructure the request body to get the data for the new pet
-    const {
-        name,
-        ageYears,
-        ageMonths,
-        petWeight,
-        willingnessToTravel,
-        selected,
-        username,
-    } = req.body;
-    console.log("Received request:", req.body);
+  // Destructure the request body to get the data for the new pet
+  const {
+    name,
+    ageYears,
+    ageMonths,
+    petWeight,
+    willingnessToTravel,
+    selected,
+    username,
+  } = req.body;
+  console.log("Received request:", req.body);
 
-    // Generate a random pet ID
-    const pet_id = uuid.v4();
+  // Generate a random pet ID
+  const pet_id = uuid.v4();
 
-    // Create a new pet document based on the request body
-    const newPet = new Pet({
-        pet_id, // Include the generated pet ID
-        pet_name: name,
-        pet_age: `${ageYears} years ${ageMonths} months`,
-        pet_weight: petWeight,
-        pet_willingness: willingnessToTravel,
-        pet_type:
-            selected == "option1"
-                ? "Dog"
-                : selected == "option2"
-                ? "Cat"
-                : selected == "option3"
-                ? "Rabbit"
-                : "Rodent",
-        user_name: username, // Assuming you have a way to identify the user
-        pet_breed: "Labrador", // Assuming you have a default breed or another way to get this data
-        pet_image: "https://placekitten.com/200/300", // Assuming you have a way to handle the image data
-        pet_size: "Medium", // Assuming you have a default size or another way to get this data
-        pet_gender: "male", // Assuming you have a default gender or another way to get this data
+  // Create a new pet document based on the request body
+  const newPet = new Pet({
+    pet_id, // Include the generated pet ID
+    pet_name: name,
+    pet_age: `${ageYears} years ${ageMonths} months`,
+    pet_weight: petWeight,
+    pet_willingness: willingnessToTravel,
+    pet_type:
+      selected == "option1"
+        ? "Dog"
+        : selected == "option2"
+        ? "Cat"
+        : selected == "option3"
+        ? "Rabbit"
+        : "Rodent",
+    user_name: username, // Assuming you have a way to identify the user
+    pet_breed: "Labrador", // Assuming you have a default breed or another way to get this data
+    pet_image: "https://placekitten.com/200/300", // Assuming you have a way to handle the image data
+    pet_size: "Medium", // Assuming you have a default size or another way to get this data
+    pet_gender: "male", // Assuming you have a default gender or another way to get this data
+  });
+
+  // Save the new pet document to the database
+  newPet
+    .save()
+    .then(() => {
+      // Send a success response back to the client
+      res.status(200).json({ message: "Pet added successfully" });
+    })
+    .catch((error) => {
+      // If there's an error saving the pet data, send an error response
+      console.error("Error saving pet data:", error);
+      res.status(500).json({ error: "Failed to add pet" });
     });
-
-    // Save the new pet document to the database
-    newPet
-        .save()
-        .then(() => {
-            // Send a success response back to the client
-            res.status(200).json({ message: "Pet added successfully" });
-        })
-        .catch((error) => {
-            // If there's an error saving the pet data, send an error response
-            console.error("Error saving pet data:", error);
-            res.status(500).json({ error: "Failed to add pet" });
-        });
 });
 
 app.get("/api/centers", async (req, res) => {
-    try {
-        const centers = await Center.find({});
+  try {
+    const centers = await Center.find({});
 
-        if (!centers || centers.length === 0) {
-            return res.status(404).json({ message: "No centers found" });
-        }
-
-        res.json(centers);
-    } catch (error) {
-        console.error("Error loading centers:", error);
-        res.status(500).json({ message: "Internal server error" });
+    if (!centers || centers.length === 0) {
+      return res.status(404).json({ message: "No centers found" });
     }
+
+    res.json(centers);
+  } catch (error) {
+    console.error("Error loading centers:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 app.post("/api/userData", async (req, res) => {
-    const { user_name } = req.body;
+  const { user_name } = req.body;
 
-    try {
-        // Find the user by user_name in the Users collection
-        const userData = await Users.findOne({ user_name });
+  try {
+    // Find the user by user_name in the Users collection
+    const userData = await Users.findOne({ user_name });
 
-        if (!userData) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // console.log(userData);
-        res.json(userData); // Send the user data as response
-    } catch (error) {
-        console.error("Error retrieving user data:", error);
-        res.status(500).json({ message: "Internal server error" });
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
     }
+
+    // console.log(userData);
+    res.json(userData); // Send the user data as response
+  } catch (error) {
+    console.error("Error retrieving user data:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 app.post("/api/signup", async (req, res) => {
-    const { username, password, user_address, mobile_number } = req.body;
+  const { username, password, user_address, mobile_number } = req.body;
 
-    try {
-        const existingUser = await Users.findOne({ user_name: username });
-        if (existingUser) {
-            return res.status(400).json({ message: "Username already exists" });
-        }
-
-        const user_id = uuid.v4();
-
-        const newUser = new Users({
-            user_id,
-            user_name: username,
-            password,
-            user_address,
-            mobile_number,
-        });
-        await newUser.save();
-
-        console.log("User signed up:", newUser);
-        res.status(201).json({ message: "User signed up successfully" });
-    } catch (error) {
-        console.error("Signup failed:", error);
-        res.status(500).json({ message: "Signup failed" });
+  try {
+    const existingUser = await Users.findOne({ user_name: username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
     }
+
+    const user_id = uuid.v4();
+
+    const newUser = new Users({
+      user_id,
+      user_name: username,
+      password,
+      user_address,
+      mobile_number,
+    });
+    await newUser.save();
+
+    console.log("User signed up:", newUser);
+    res.status(201).json({ message: "User signed up successfully" });
+  } catch (error) {
+    console.error("Signup failed:", error);
+    res.status(500).json({ message: "Signup failed" });
+  }
 });
 
 // Login endpoint
 app.post("/api/login", async (req, res) => {
-    const { user_name: username, password } = req.body;
+  const { user_name: username, password } = req.body;
 
-    try {
-        const user = await Users.findOne({ username, password });
-        if (!user) {
-            return res
-                .status(401)
-                .json({ message: "Invalid username or password" });
-        }
-
-        const token = jwt.sign({ username: user.user_name }, secretKey, {
-            expiresIn: "1h",
-        });
-
-        res.json({ token });
-    } catch (error) {
-        console.error("Login failed:", error);
-        res.status(500).json({ message: "Login failed" });
+  try {
+    const user = await Users.findOne({ username, password });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid username or password" });
     }
+
+    const token = jwt.sign({ username: user.user_name }, secretKey, {
+      expiresIn: "1h",
+    });
+
+    res.json({ token });
+  } catch (error) {
+    console.error("Login failed:", error);
+    res.status(500).json({ message: "Login failed" });
+  }
 });
 
 app.post("/api/user", (req, res) => {
-    const token = req.headers.authorization;
+  const token = req.headers.authorization;
 
-    console.log("Received Token:", token);
+  console.log("Received Token:", token);
 
-    try {
-        if (!token || !token.startsWith("Bearer ")) {
-            throw new Error("Invalid token format");
-        }
-        const decodedToken = token.split(" ")[1];
-
-        // console.log('Decoded Token:', decodedToken);
-
-        const decoded = jwt.verify(decodedToken, secretKey);
-        if (Date.now() >= decoded.exp * 1000) {
-            throw new Error("Token expired");
-        }
-
-        // console.log('Decoded:', decoded);
-        res.json({ username: decoded.username });
-    } catch (error) {
-        console.error("Error decoding token:", error);
-        res.status(401).json({ message: "Unauthorized" });
+  try {
+    if (!token || !token.startsWith("Bearer ")) {
+      throw new Error("Invalid token format");
     }
+    const decodedToken = token.split(" ")[1];
+
+    // console.log('Decoded Token:', decodedToken);
+
+    const decoded = jwt.verify(decodedToken, secretKey);
+    if (Date.now() >= decoded.exp * 1000) {
+      throw new Error("Token expired");
+    }
+
+    // console.log('Decoded:', decoded);
+    res.json({ username: decoded.username });
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    res.status(401).json({ message: "Unauthorized" });
+  }
 });
 
 app.get("/api/getAllBookings", async (req, res) => {
-    try {
-        console.log("Booking request received\n");
-        const bookings = await Booking.find();
+  try {
+    console.log("Booking request received\n");
+    const bookings = await Booking.find();
 
-        // Return the bookings as JSON
-        res.json(bookings);
-    } catch (error) {
-        console.error("Failed to retrieve bookings:", error);
-        res.status(500).json({ message: "Failed to retrieve bookings" });
-    }
+    // Return the bookings as JSON
+    res.json(bookings);
+  } catch (error) {
+    console.error("Failed to retrieve bookings:", error);
+    res.status(500).json({ message: "Failed to retrieve bookings" });
+  }
+});
+
+// AI
+const genAI = new GoogleGenerativeAI("AIzaSyA92pNsNm_Z8vng8RMNlcUUDeo59YkFH8s");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+async function getAIResponse(prompt) {
+  prompt =
+    "Answer the query in just plain text, without any formatting. Keep the answer at most 50 words in length. Prompt : " +
+    prompt;
+  try {
+    const result = await model.generateContent(prompt);
+    return result.response.text();
+  } catch (error) {
+    console.error("Error generating response:", error);
+    return "Error generating response.";
+  }
+}
+
+app.post("/api/message", async (req, res) => {
+  const { prompt } = req.body;
+  if (!prompt) {
+    return res.status(400).json({ message: "Prompt is required." });
+  }
+
+  try {
+    const aiResponse = await getAIResponse(prompt);
+    console.log(aiResponse);
+    res.json({ response: aiResponse });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
