@@ -103,7 +103,7 @@ export default function Sidebar2() {
 
 
     return (
-        <header className="bg-green-600">
+        <header className="bg-gradient-to-r from-green-500 to-blue-500">
 
 
 
@@ -117,7 +117,7 @@ export default function Sidebar2() {
                 <div className="flex lg:hidden">
                     <button
                         type="button"
-                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-black"
+                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
                         onClick={() => setMobileMenuOpen(true)}
                     >
                         <span className="sr-only">Open main menu</span>
@@ -126,9 +126,9 @@ export default function Sidebar2() {
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
                     <Popover className="relative">
-                        <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-black">
+                        <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-white">
                             Product
-                            <ChevronDownIcon className="h-5 w-5 flex-none text-black" aria-hidden="true" />
+                            <ChevronDownIcon className="h-5 w-5 flex-none text-white" aria-hidden="true" />
                         </Popover.Button>
 
                         <Transition
@@ -165,7 +165,7 @@ export default function Sidebar2() {
                                         <a
                                             key={item.name}
                                             href={item.href}
-                                            className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
+                                            className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-white hover:bg-gray-100"
                                         >
                                             <item.icon className="h-5 w-5 flex-none text-stone-900" aria-hidden="true" />
                                             {item.name}
@@ -176,16 +176,16 @@ export default function Sidebar2() {
                         </Transition>
                     </Popover>
 
-                    <a href="/features" className="text-sm font-semibold leading-6 text-black">
+                    <a href="/features" className="text-sm font-semibold leading-6 text-white">
                         Features
                     </a>
-                    <a href="/pethouses" className="text-sm font-semibold leading-6 text-black">
+                    <a href="/pethouses" className="text-sm font-semibold leading-6 text-white">
                         Pet Houses
                     </a>
-                    <a href="/home" className="text-sm font-semibold leading-6 text-black">
+                    <a href="/home" className="text-sm font-semibold leading-6 text-white">
                         Company
                     </a>
-                    <a href="/profile" className="text-sm font-semibold leading-6 text-black">
+                    <a href="/profile" className="text-sm font-semibold leading-6 text-white">
                                     Profile
                                 </a>
                 </Popover.Group>
