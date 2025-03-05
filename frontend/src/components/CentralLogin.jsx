@@ -14,6 +14,9 @@ export default function CentralLogin() {
     const handleAdminSignup=()=>{
         navigate('/AdminSignup');
     }
+    const handleVetLoginClick=()=>{
+        navigate('/vetLogin');
+    }
     
     return (
         <>
@@ -76,7 +79,13 @@ export default function CentralLogin() {
                         <h2 className=" text-lg font-serif mb-20 text-white">
                             We have over 2000 verified vetenaries on this Platform.
                         </h2>
-                        <ButtonG text={"LOGIN"} />
+                        <button
+                            type="button"
+                            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                            onClick={handleVetLoginClick}
+                        >
+                            {'Login'}
+                        </button>
                         <h2 className=" text-lg font-serif mt-20 text-white">
                             Don't Have Account?{" "}
                             <a href="" className=" text-teal-400">

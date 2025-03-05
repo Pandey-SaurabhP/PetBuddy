@@ -17,7 +17,12 @@ import CentralLogin from "./components/CentralLogin";
 import VetClinics from "./components/VetClinics"
 import AdminLogin from "./components/AdminLogin";
 import AdminSignup from "./components/AdminSignup";
+import VetProfile from "./VetClinics/Profile"
+import Appointments from "./VetClinics/Appointments"
+import VetLogin from "./components/vetLogin"
 import Bookings from "./PetHouses/Bookings";
+import PersonalisedProfile from "./components/PersonalisedProfile"
+import PersonalisedProfile2 from "./components/PersonalisedProfile2";
 function App() {
   return (
     <>
@@ -39,7 +44,11 @@ function App() {
         <Route path="/AdminDashboard" element={<AdminDashboard />}/>
         <Route path="/petHouseProfile" element={<PetHouseProfile />}/>
         <Route path="/vetClinics" element={<VetClinics />}/>
-
+        <Route path="/vetProfile" element={<VetProfile />}/>
+        <Route path="/appointments" element={<Appointments />}/>
+        <Route path="/vetLogin" element={<VetLogin />}/>
+        <Route path="/personalisedprofile" element={<PersonalisedProfile />}/>
+        <Route path="/personalisedprofile2" element={<PersonalisedProfile2 />}/>
         <Route path="/adminSignup" element={<AdminSignup />}/>
         <Route path="/adminLogin" element={<AdminLogin />}/>
         <Route path="/adminBooking" element={<Bookings />}/>

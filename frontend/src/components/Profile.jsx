@@ -81,6 +81,14 @@ export default function Profile() {
             console.log('Token Not Set');
         }
     }, []);
+    const handlePetClick = (pet) => {
+        if (pet.pet_name.toLowerCase() === "poco") {
+            navigate("/personalisedprofile2");
+        } else {
+            navigate("/personalisedprofile");
+        }
+    };
+    
 
     return (
         <>
@@ -112,21 +120,22 @@ export default function Profile() {
                         key={index}
                         className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 rounded overflow-hidden shadow-lg m-4"
                     >
-                        <img
-                            className="h-64"
-                            src={pet.pet_image}
-                            alt={pet.pet_name}
-                        />
-                        <div className="px-6 py-4 flex justify-between bg-blue-gray-200">
-                            <div className="font-bold text-xl mb-2 ">{pet.pet_name}</div>
+                        
+                        <div className="px-6 py-4 flex flex-col justify-between bg-blue-gray-200">
+                            <div className="font-bold text-xl mb-2">{pet.pet_name}</div>
                             <p className="text-gray-700 text-base">
                                 Type: {pet.pet_type}
                                 <br />
                                 Breed: {pet.pet_breed}
-                                <br />
-                                ID: {pet.pet_id}
                             </p>
+                            <button
+                                className="mt-4 ml-4 bg-green-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={() => handlePetClick(pet)}
+                            >
+                                View {pet.pet_name} 's Details
+                            </button>
                         </div>
+
                     </div>
                 ))}
             </div>

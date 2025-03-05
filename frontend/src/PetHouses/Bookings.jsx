@@ -6,32 +6,40 @@ const Bookings = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Fetch data from API
-        const fetchBookings = async () => {
-            try {
-                const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
-                const adminId = JSON.parse(atob(token.split('.')[1])).adminId; // Decode JWT to extract adminId
-                console.log(adminId);
-                
-                const response = await fetch(`http://localhost:3001/api/admin/bookings/${adminId}`, {
-                    method: 'GET', // Use GET to fetch data
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // Include the JWT token
-                    },
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    setBookings(data); // Set the bookings data received from the API
-                    setLoading(false);
-                } else {
-                    console.error('Failed to fetch bookings');
-                    setLoading(false);
+        // Simulate data fetching
+        const fetchBookings = () => {
+            const mockBookings = [
+                {
+                    _id: '1',
+                    type: 'Pet Boarding',
+                    user_name: 'John Doe',
+                    pet_name: 'Buddy',
+                    start_date: '2024-09-28',
+                    end_date: '2024-10-05',
+                    datetime_of_booking: '2024-09-25',
+                },
+                {
+                    _id: '2',
+                    type: 'Vet Appointment',
+                    user_name: 'Jane Smith',
+                    pet_name: 'Max',
+                    start_date: '2024-09-30',
+                    end_date: '2024-09-30',
+                    datetime_of_booking: '2024-09-26',
+                },
+                {
+                    _id: '3',
+                    type: 'Grooming',
+                    user_name: 'Alice Johnson',
+                    pet_name: 'Whiskers',
+                    start_date: '2024-10-01',
+                    end_date: '2024-10-01',
+                    datetime_of_booking: '2024-09-27',
                 }
-            } catch (error) {
-                console.error('Error fetching bookings:', error);
-                setLoading(false);
-            }
+            ];
+            
+            setBookings(mockBookings); // Set the mock bookings data
+            setLoading(false); // Set loading to false after data is "fetched"
         };
 
         fetchBookings();

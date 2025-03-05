@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react';
 import logo from "../assets/logo.png";
-
+import Sidebar from "./Sidebar";
 import axios from 'axios';
 
 import {
@@ -176,16 +176,12 @@ export default function Sidebar2() {
                         </Transition>
                     </Popover>
 
-                    <a href="/features" className="text-sm font-semibold leading-6 text-black">
-                        Features
+                    
+                    <a href="/appointments" className="text-sm font-semibold leading-6 text-black">
+                        Appointments
                     </a>
-                    <a href="/pethouses" className="text-sm font-semibold leading-6 text-black">
-                        Pet Houses
-                    </a>
-                    <a href="/home" className="text-sm font-semibold leading-6 text-black">
-                        Company
-                    </a>
-                    <a href="/profile" className="text-sm font-semibold leading-6 text-black">
+                   
+                    <a href="/vetProfile" className="text-sm font-semibold leading-6 text-black">
                                     Profile
                                 </a>
                 </Popover.Group>

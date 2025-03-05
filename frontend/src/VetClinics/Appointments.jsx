@@ -34,7 +34,7 @@ const VetAppointments = () => {
         <div>
             <Sidebar />
             <div className="container mx-auto px-4 font-inter">
-                <h2 className="text-3xl font-bold mb-6 text-center">Vet Appointments</h2>
+                <h2 className="text-3xl font-bold mb-6 text-center">Past Vet Appointments</h2>
                 <div className="flex flex-col gap-6">
                     {appointments.map((appointment) => (
                         <div

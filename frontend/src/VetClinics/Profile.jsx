@@ -1,8 +1,8 @@
-import Sidebar2 from "../components/Sidebar2";
+import Sidebar2 from "./Sidebar";
 import VetImage from "../assets/vet.jpg"; // Replace with an appropriate vet clinic image
 import Footer from "../components/Footer";
 
-export default function VetClinicProfile() {
+export default function vetProfile() {
     const vetClinic = {
         name: "Caring Paws Veterinary Clinic",
         latitude: 37.7749,

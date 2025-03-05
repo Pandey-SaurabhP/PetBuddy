@@ -18,7 +18,7 @@ const AdminLogin = () => {
             const response = await axios.post('http://localhost:3001/api/admin/signin', formData);
             console.log(response.data.message);
             localStorage.setItem('token', response.data.token); // Storing token for future API requests
-            navigate('/AdminProfile');
+            navigate('/vetProfile');
         } catch (error) {
             console.error('Error during login', error.response?.data?.message || error.message);
             alert('Error during login');
@@ -28,7 +28,7 @@ const AdminLogin = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-500">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+                <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Vet Login</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="flex flex-col">
                         <label className="font-semibold text-gray-700">Email</label>
