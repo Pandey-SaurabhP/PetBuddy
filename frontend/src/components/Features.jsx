@@ -36,7 +36,9 @@ export default function Features() {
         <>
             <Sidebar2 />
             <div className="m-10">
-                <h1 className="text-5xl mt-20 text-black font-bold text-center">Features We Provide</h1>
+                <h1 className="text-5xl mt-20 font-bold text-center">
+                    <span className="">Features We Provide</span>
+                    </h1>
                 <div className="mt-10 flex justify-center gap-8">
                     {cardsData.map((card) => (
                         <a key={card.id} href={card.link} className="text-black no-underline">

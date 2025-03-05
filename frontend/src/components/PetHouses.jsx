@@ -10,21 +10,10 @@ import Footer from "./Footer";
 export default function PetHouses() {
     const [favorites, setFavorites] = useState([]);
     const [showBookingCard, setShowBookingCard] = useState(false);
-    const [selectedHotel, setSelectedHotel] = useState(null);
     const [pethouse, setPethouse] = useState(null);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [filterItem, setFilterItem] = useState(null);
     const [sortedData, setSortedData] = useState(null);
-    const [data, setData] = useState([
-        {
-            id: 1,
-            title: "PetHouse A",
-            rating: 4.5,
-            address: "123 Sector 18, Noida, U.P.",
-            additionalInfo: "Pet Grooming, Diet plans, Vet Available",
-            price: 100,
-        },
-    ]);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         fetchPetHouses();
@@ -35,14 +24,16 @@ export default function PetHouses() {
             const response = await fetch("http://localhost:3001/api/centers");
             if (!response.ok) throw new Error("Failed to fetch pet houses");
             const fetchedData = await response.json();
-            setData(fetchedData.map(item => ({
+            const formattedData = fetchedData.map(item => ({
                 id: item._id,
                 title: item.name,
                 rating: item.rating,
                 address: item.address,
                 additionalInfo: item.additionalInfo,
                 price: item.price,
-            })));
+            }));
+            setData(formattedData);
+            setSortedData(formattedData);
         } catch (error) {
             console.error("Error fetching pet houses:", error);
         }
@@ -62,10 +53,24 @@ export default function PetHouses() {
         setShowSuccessModal(true);
     };
 
+    const sortByRating = () => {
+        setSortedData([...data].sort((a, b) => b.rating - a.rating));
+    };
+
+    const sortByPrice = () => {
+        setSortedData([...data].sort((a, b) => a.price - b.price));
+    };
+
     return (
         <div className="bg-gray-100 min-h-screen ">
             <Sidebar2 />
             <h2 className="text-3xl font-bold text-gray-800 mt-6 ml-24">Explore Premium Pet Houses</h2>
+            
+            <div className="flex justify-center mt-4 space-x-4">
+                <button className="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg shadow-md hover:bg-blue-600" onClick={sortByRating}>Sort by Rating</button>
+                <button className="px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-md hover:bg-green-600" onClick={sortByPrice}>Sort by Price</button>
+            </div>
+            
             <div className="flex flex-wrap justify-center mt-5">
                 {(sortedData || data).map((item) => (
                     <div key={item.id} className="relative w-[340px] bg-white shadow-xl rounded-xl overflow-hidden m-4 p-4 transition transform hover:scale-105">
