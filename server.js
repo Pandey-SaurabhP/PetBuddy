@@ -27,7 +27,7 @@ app.use(cors());
 app.use("/api/admin", adminRoutes);
 
 const uri =
-  "mongodb+srv://pandeygrocks:Saurabh04@maindb.ijbfr2l.mongodb.net/petbuddy?retryWrites=true&w=majority";
+  process.env.MONGO_URI;
 
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -309,7 +309,7 @@ app.get("/api/getAllBookings", async (req, res) => {
 });
 
 // AI
-const genAI = new GoogleGenerativeAI("AIzaSyA92pNsNm_Z8vng8RMNlcUUDeo59YkFH8s");
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_ID);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 async function getAIResponse(prompt) {
